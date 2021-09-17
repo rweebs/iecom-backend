@@ -43,7 +43,8 @@ module.exports ={
             cc:'rahmat.wibowo21@gmail.com',
             subject: 'Accepted',
             text: `Dear ${(req.body.name).toUpperCase()},
-            Activation Email = localhost:8000/api/activate?token=${token}
+            
+            <a href="https://iecom-backend-dev.herokuapp.com//api/activate?token=${token}">Activation Email</a>
             `
           };
           
