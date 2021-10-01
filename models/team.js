@@ -16,7 +16,8 @@ const qaSchema = new Schema({
 const memberSchema = new Schema({
     member:{
         type: mongoose.Schema.Types.ObjectId,
-        ref: "User"
+        ref: "User",
+        required:true
       },
     university_id:{
         type: String
@@ -40,6 +41,10 @@ const teamSchema = new Schema({
         unique:true
     },
     member:[memberSchema],
+    university: {
+        type :String,
+        required: true
+    },
     qa:[qaSchema],
     status:{
         type:String,
@@ -55,5 +60,9 @@ const teamSchema = new Schema({
 },{timestamps:true});
 
 const Team = mongoose.model('Team',teamSchema)
+const QA = mongoose.model('Qa',qaSchema)
+const Member = mongoose.model('Member',memberSchema)
 
-module.exports= Team
+module.exports= {
+    Team,QA,Member
+}

@@ -1,11 +1,22 @@
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const User =require('../models/users')
+const Competition =require('../models/competition')
 const fs = require('fs');
 const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
+const { set } = require('mongoose');
+const email=require('../views/email')
 var mailgun = require('mailgun-js')({apiKey: process.env.API_KEY, domain: "admin.bistleague.com"});
-
+const nodemailer = require('nodemailer')
+let transport = nodemailer.createTransport({
+  host: "smtp.pepipost.com",
+  port: 25,
+  auth: {
+    user: "rahmatwibowoitb",
+    pass: "rahmatwibowoitb_b52152c0b476575a5be41f4411550d47"
+  }
+});
 // get config vars
 dotenv.config();
 
@@ -28,36 +39,44 @@ module.exports ={
             })
         }
         const token=require('crypto').randomBytes(64).toString('hex')
+        const test= await User.findOne({email:req.body.email})
+        if(test){
+            return (res.status(400).json({
+                status: "FAILED",
+                data:test,
+                message: "email has already exist"
+            }))
+        }
         const user =new User({
             email:req.body.email,
             password: encryptedPassword,
             name:req.body.name,
             phone:req.body.phone,
             university: req.body.university,
-            act_token:token
-        })
-        try{
-        const data = {
-            from: 'Admin Bist League <noreply@admin.bistleague.com>',
-            to: req.body.email,
-            cc:'rahmat.wibowo21@gmail.com',
-            subject: 'Accepted',
-            text: `Dear ${(req.body.name).toUpperCase()},
+            act_token:token})
+        
+        // try{
+        // const data = {
+        //     from: 'Admin Bist League <noreply@admin.bistleague.com>',
+        //     to: req.body.email,
+        //     cc:'rahmat.wibowo21@gmail.com',
+        //     subject: 'Accepted',
+        //     text: `Dear ${(req.body.name).toUpperCase()},
 
-            https://iecom-backend-dev.herokuapp.com/api/activate?token=${token}
-            `
-          };
+        //     https://iecom-backend-dev.herokuapp.com/api/activate?token=${token}
+        //     `
+        //   };
           
-          mailgun.messages().send(data, (error, body) => {
+        //   mailgun.messages().send(data, (error, body) => {
             
-          });
-        }
-        catch (err){
-            return(res.status(400).json({
-                status: "FAILED",
-                message: err.message
-            }))
-        }
+        //   });
+        // }
+        // catch (err){
+        //     return(res.status(400).json({
+        //         status: "FAILED",
+        //         message: err.message
+        //     }))
+        // }
         await user.save((err,result)=>{
                 if(err){
                     return(res.status(400).json({
@@ -65,12 +84,26 @@ module.exports ={
                         message: err.message
                     }))
                 }
-                else{
+                else{let message={
+                    from:'embedded@pepisandbox.com',
+                    to:req.body.email,
+                    subject:'Verification',
+                    html:email.message(req.body.name,`https://iecom-backend-dev.herokuapp.com/api/activate?token=${token}`)
+                };
+                transport.sendMail(message,(err,info)=>{
+                    if(err){
+                        res.status(400).json({
+                            status: "FAILED",
+                            message: err
+                        })
+                        
+                    }
                     return(res.status(200).json({
                         status:"SUCCESS",
                         message:"User Successfully created",
                         data:result
-                    }))
+                    }))})
+                    
                 }
             })
 
@@ -132,5 +165,28 @@ module.exports ={
             }
             return ( res.redirect(301, 'https://bistleague.com'))
         })
-    }
+    },
+    get:async(req,res)=>{
+        
+        const user= await User.findOne({email:req.email}).select({password:0,act_token:0})
+        let competition=[]
+        for (const element of user.competition) {
+                const temp = await Competition.findById(element)
+                competition.push(temp.name)
+        }
+        const {email,name,university,phone,image}=user
+        const data={
+            name,
+            email,
+            university,
+            phone,
+            image,
+            competition
+        }
+        return (res.status(200).json({
+            status: "SUCCESS",
+            data
+
+        }))
+    },
 }
