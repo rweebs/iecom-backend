@@ -7,7 +7,8 @@ module.exports={
         if(req.body.api_key==process.env.Pass){
             const competition = new Competition({
                 name:req.body.name,
-                stage: req.body.stage
+                stage: req.body.stage,
+                isAvailable:false
             })
             await competition.save((err,result)=>{
                 if(err){
@@ -37,6 +38,7 @@ module.exports={
         if(req.body.api_key==process.env.Pass){
             const competition = Competition.findOne({name:req.body.name})
             competition.stage=req.body.stage
+            competition.isAvailable=req.body.isAvailable
             
             await competition.save((err,result)=>{
                 if(err){

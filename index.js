@@ -5,7 +5,7 @@ const cors = require('cors');
 const app=express();
 const swaggerJsDoc = require('swagger-jsdoc')
 const swaggerUi = require('swagger-ui-express')
-
+const { uploadMedia } = require('./pkg/image-upload');
 const dotenv = require('dotenv');
 const swaggerOptions ={
   swaggerDefinition:{
@@ -44,10 +44,10 @@ app.use(competitionRouter)
 app.use("/api/docs",swaggerUi.serve, swaggerUi.setup(swaggerDocs))
 require('./route/users.route')(app);
 require('./route/teams.route')(app);
-
 const path = require('path');
 
 const fs = require('fs');
+
 
 app.listen(process.env.PORT || 5000,function(){
     console.log(`listening to port${process.env.PORT || 5000}`)

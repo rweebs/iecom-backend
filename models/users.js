@@ -23,6 +23,9 @@ const userSchema = new Schema({
         type :String,
         required: true,
     },
+    major:{
+        type: String
+    },
     image: {
         type :String,
         default:"",

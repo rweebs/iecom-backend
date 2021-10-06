@@ -47,66 +47,88 @@ module.exports ={
                 message: "email has already exist"
             }))
         }
+        if(!req.file){
+            return (res.status(400).json({
+                status: "FAILED",
+                data:test,
+                message: "image not found"
+            }))
+        }
         const user =new User({
             email:req.body.email,
             password: encryptedPassword,
             name:req.body.name,
-            phone:req.body.phone,
             university: req.body.university,
-            act_token:token})
+            phone:req.body.phone,
+            major:req.body.major,
+            image:req.image,
+            status:"Pending",
+            act_token:token,
+        })
         
-        // try{
-        // const data = {
-        //     from: 'Admin Bist League <noreply@admin.bistleague.com>',
-        //     to: req.body.email,
-        //     cc:'rahmat.wibowo21@gmail.com',
-        //     subject: 'Accepted',
-        //     text: `Dear ${(req.body.name).toUpperCase()},
-
-        //     https://iecom-backend-dev.herokuapp.com/api/activate?token=${token}
-        //     `
-        //   };
+        try{
+        const data = {
+            from: 'Admin Bist League <noreply@admin.bistleague.com>',
+            to: req.body.email,
+            subject: 'Accepted',
+            html:email.message(req.body.name,`https://iecom-backend-dev.herokuapp.com/api/users/activate?token=${token}`)
+          };
           
-        //   mailgun.messages().send(data, (error, body) => {
+          mailgun.messages().send(data, (error, body) => {
             
-        //   });
-        // }
-        // catch (err){
-        //     return(res.status(400).json({
-        //         status: "FAILED",
-        //         message: err.message
-        //     }))
-        // }
-        await user.save((err,result)=>{
+          });
+        }
+        catch (err){
+            return(res.status(400).json({
+                status: "FAILED",
+                message: err.message
+            }))
+        }
+        // await user.save((err,result)=>{
+        //         if(err){
+        //             return(res.status(400).json({
+        //                 status: "FAILED",
+        //                 message: err.message
+        //             }))
+        //         }
+        //         else{let message={
+        //             from:'embedded@pepisandbox.com',
+        //             to:req.body.email,
+        //             subject:'Verification',
+        //             html:email.message(req.body.name,`https://iecom-backend-dev.herokuapp.com/api/activate?token=${token}`)
+        //         };
+        //         transport.sendMail(message,(err,info)=>{
+        //             if(err){
+        //                 res.status(400).json({
+        //                     status: "FAILED",
+        //                     message: err
+        //                 })
+                        
+        //             }
+        //             return(res.status(200).json({
+        //                 status:"SUCCESS",
+        //                 message:"User Successfully created",
+        //                 data:result
+        //             }))})
+                    
+        //         }
+        //     })
+
+            await user.save((err,result)=>{
                 if(err){
                     return(res.status(400).json({
                         status: "FAILED",
                         message: err.message
                     }))
                 }
-                else{let message={
-                    from:'embedded@pepisandbox.com',
-                    to:req.body.email,
-                    subject:'Verification',
-                    html:email.message(req.body.name,`https://iecom-backend-dev.herokuapp.com/api/activate?token=${token}`)
-                };
-                transport.sendMail(message,(err,info)=>{
-                    if(err){
-                        res.status(400).json({
-                            status: "FAILED",
-                            message: err
-                        })
-                        
-                    }
-                    return(res.status(200).json({
+                return(res.status(200).json({
                         status:"SUCCESS",
                         message:"User Successfully created",
                         data:result
-                    }))})
+                    }))
                     
                 }
-            })
-
+            )
       
     },
     login: async (req,res)=>{

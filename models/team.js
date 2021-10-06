@@ -19,6 +19,10 @@ const memberSchema = new Schema({
         ref: "User",
         required:true
       },
+    name:{
+        type: String,
+        required:true
+    },
     university_id:{
         type: String
     },
@@ -28,9 +32,13 @@ const memberSchema = new Schema({
     id_line:{
         type: String
     },
-    preference:{
-        type: String,
-        enum:['WhatsApp','Telegram','Email']
+    wa: {
+        type :Boolean,
+        required: true
+    },
+    wa_number:{
+        type:Boolean,
+        required:true
     }
 })
 
@@ -50,6 +58,14 @@ const teamSchema = new Schema({
         type:String,
         enum:["Pending","Verified","Passed","Failed"],
         default:"Pending"
+    },
+    bank_account:{
+        type:String,
+        required:true
+    },
+    card_holder:{
+        type:String,
+        required:true
     },
     payment_link:{
         type:String

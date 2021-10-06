@@ -7,6 +7,9 @@ const eventSchema = new Schema({
         required: true,
         unique:true
     },
+    is_paid:{
+        type:Boolean
+    },
     theme: {
         type :String,
         required: true,

@@ -1,6 +1,7 @@
 
 const controller = require('../controllers/users.controller')
 const { authJwt } = require('../middleware')
+const { uploadMediaUser } = require('../pkg/image-upload')
 
  module.exports = function(app) {
     app.use(function(req, res, next) {
@@ -13,6 +14,7 @@ const { authJwt } = require('../middleware')
   
     app.post(
       "/api/users",
+      [uploadMediaUser],
       controller.create
     );
 

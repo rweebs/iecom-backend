@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const User =require('../models/users')
-const {Team,Member} = require('../models/team');
+const {Essay,Member} = require('../models/essay');
 const fs = require('fs');
 const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
@@ -52,7 +52,7 @@ module.exports ={
             members=[member1,member2,member3]
         }
         members=[member1,member2]
-        const team = new Team({
+        const team = new Essay({
             name: req.body.team_name,
             member:members,
             university:req.body.university,
@@ -103,9 +103,9 @@ module.exports ={
       
     },
     activate:async (req,res)=>{
-        const competition= await Competition.findOne({name:"MAIN COMPETITION"})
+        const competition= await Competition.findOne({name:"ESSAY COMPETITION"})
         console.log(competition)
-        const team = await Team.findOne({name:req.query.name,status:"Pending"})
+        const team = await Essay.findOne({name:req.query.name,status:"Pending"})
         console.log(team)
         if(!team){
             return (res.status(404).json({
@@ -119,7 +119,7 @@ module.exports ={
             const user3 = await User.findByIdAndUpdate(team.member[2].member,{"$push": {"competition": competition}})
         }
         try{
-        const team =await Team.updateOne({name:req.query.name},{status:"Verified"})
+        const team =await Essay.updateOne({name:req.query.name},{status:"Verified"})
         }
         catch(e){
             return (res.status(404).json({

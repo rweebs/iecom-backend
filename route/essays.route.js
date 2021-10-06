@@ -12,14 +12,14 @@ module.exports = function(app) {
   });
 
   app.post(
-    "/api/teams/create",
+    "/api/essays/create",
     [
       authJwt.verifyToken,uploadMediaTeam
     ],
     controller.create
   );
   app.get(
-    "/api/teams/activate",
+    "/api/essays/activate",
     controller.activate
   );
 

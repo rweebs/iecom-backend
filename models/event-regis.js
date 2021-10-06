@@ -7,9 +7,6 @@ const eventRegisSchema = new Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"
       },
-    major:{
-        type: String
-    },
     payment_link:{
         type:String
     },
@@ -20,6 +17,6 @@ const eventRegisSchema = new Schema({
     },
 },{timestamps:true});
 
-const Essay = mongoose.model('Event-Regis',essaySchema)
+const EventSchema = mongoose.model('Event-Regis',eventRegisSchema)
 
 module.exports= Essay

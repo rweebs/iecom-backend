@@ -11,6 +11,10 @@ const competitionSchema = new Schema({
         type :String,
         required: true,
     },
+    isAvailable:{
+        type:String,
+        required:true,
+    }
 },{timestamps:true});
 
 const Competition = mongoose.model('Competition',competitionSchema)
