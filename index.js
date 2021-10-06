@@ -43,7 +43,7 @@ app.use(express.urlencoded({ extended: true })) // for parsing application/x-www
 app.use(competitionRouter)
 app.use("/api/docs",swaggerUi.serve, swaggerUi.setup(swaggerDocs))
 require('./route/users.route')(app);
-require('./route/teams.route')(app);
+// require('./route/teams.route')(app);
 const path = require('path');
 
 const fs = require('fs');
