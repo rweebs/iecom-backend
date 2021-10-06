@@ -27,6 +27,7 @@ const swaggerDocs= swaggerJsDoc(swaggerOptions)
 // get config vars
 dotenv.config();
 const competitionRouter=require('./route/competition.route')
+const eventRouter=require('./route/events.route')
 app.use(cors({
     origin: ['http://localhost:3000','https://bist-dev.herokuapp.com','https://bistleague.azurewebsites.net','https://bistleague.com']
   }));
@@ -41,9 +42,12 @@ db.once('open', function() {
 app.use(express.json()) // for parsing application/json
 app.use(express.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
 app.use(competitionRouter)
+app.use(eventRouter)
 app.use("/api/docs",swaggerUi.serve, swaggerUi.setup(swaggerDocs))
 require('./route/users.route')(app);
-// require('./route/teams.route')(app);
+require('./route/teams.route')(app);
+require('./route/essays.route')(app);
+require('./route/event-regist.route')(app);
 const path = require('path');
 
 const fs = require('fs');

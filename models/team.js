@@ -37,7 +37,7 @@ const memberSchema = new Schema({
         required: true
     },
     wa_number:{
-        type:Boolean,
+        type:String,
         required:true
     }
 })

@@ -8,6 +8,10 @@ const eventSchema = new Schema({
         unique:true
     },
     is_paid:{
+        type:Boolean,
+        required:true
+    },
+    is_available:{
         type:Boolean
     },
     theme: {
@@ -27,8 +31,7 @@ const eventSchema = new Schema({
         required: true,
     },
     link: {
-        type :String,
-        required: true,
+        type :String
     },
 },{timestamps:true});
 

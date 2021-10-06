@@ -1,6 +1,6 @@
 const { authJwt } = require("../middleware");
 const {uploadMediaTeam} = require('../pkg/image-upload')
-const controller = require("../controllers/teams.controller");
+const controller = require("../controllers/essay.controller");
 
 module.exports = function(app) {
   app.use(function(req, res, next) {

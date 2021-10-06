@@ -19,20 +19,13 @@ const memberSchema = new Schema({
     id_line:{
         type: String
     },
-    phone: {
-        type :String,
-        required: true
-    },
     wa: {
         type :Boolean,
         required: true
     },
     wa_number:{
-        type:Boolean,
-        required:true
-    },
-    photo_link:{
         type:String,
+        required:true
     }
 })
 
@@ -66,9 +59,7 @@ const essaySchema = new Schema({
 },{timestamps:true});
 
 const Essay = mongoose.model('Essay',essaySchema)
-const Member = mongoose.model('Member',memberSchema)
 
 module.exports= {
-    Essay,
-    Member
+    Essay
 }

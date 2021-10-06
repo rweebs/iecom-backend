@@ -1,12 +1,13 @@
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
-const User =require('../models/users')
+const {User,Teams} =require('../models/users')
 const Competition =require('../models/competition')
+const Event = require('../models/event')
 const fs = require('fs');
 const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
 const { set } = require('mongoose');
-const email=require('../views/email')
+const email=require('../views/user-verification')
 var mailgun = require('mailgun-js')({apiKey: process.env.API_KEY, domain: "admin.bistleague.com"});
 const nodemailer = require('nodemailer')
 let transport = nodemailer.createTransport({
@@ -190,11 +191,34 @@ module.exports ={
     },
     get:async(req,res)=>{
         
-        const user= await User.findOne({email:req.email}).select({password:0,act_token:0})
+        const user= await User.findOne({email:req.email})
+        if(!user){
+            return (res.status(404).json({
+                status: "FAILED",
+                message: err.message
+            }))
+        }
         let competition=[]
+        let event=[]
         for (const element of user.competition) {
-                const temp = await Competition.findById(element)
-                competition.push(temp.name)
+                const temp = await Competition.findById(element.competition)
+                const team_name=element.team_name
+                const name =[]
+                for (const member of element.member){
+                    name.push(member.name)
+                }
+                result={
+                    name:temp.name,
+                    stage:temp.stage,
+                    isAvailable:temp.isAvailable,
+                    team_name:team_name,
+                    members:name
+                }
+                competition.push(result)
+        }
+        for (const element of user.event) {
+                const temp = await Event.findById(element)
+                event.push(temp)
         }
         const {email,name,university,phone,image}=user
         const data={
@@ -203,7 +227,8 @@ module.exports ={
             university,
             phone,
             image,
-            competition
+            competition,
+            event
         }
         return (res.status(200).json({
             status: "SUCCESS",
