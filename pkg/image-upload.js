@@ -1,5 +1,6 @@
 const aws = require('aws-sdk')
 const multer = require('multer')
+const path = require('path')
 const multerS3 = require('multer-s3')
 const endpoint = new aws.Endpoint("sgp1.digitaloceanspaces.com")
 require('dotenv').config()
@@ -17,7 +18,7 @@ const upload= multer({
         acl:"public-read",
         contentType:multerS3.AUTO_CONTENT_TYPE,
         key: (req,file,cb)=>{
-            const filename = req.headers.directory+'/'+file.originalname
+            const filename = req.headers.directory+'/'+req.body.email+path.extname(file.originalname)
             cb(null,filename);
         }
     })
@@ -47,7 +48,7 @@ const uploadMediaUser=(req,res,next)=>{
         if(err){
             return err
         }
-        req.iamge=req.files[0].location
+        req.image=req.files[0].location
         next()
     })
 }

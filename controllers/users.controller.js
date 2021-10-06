@@ -47,7 +47,7 @@ module.exports ={
                 message: "email has already exist"
             }))
         }
-        if(!req.file){
+        if(!req.image){
             return (res.status(400).json({
                 status: "FAILED",
                 data:test,
