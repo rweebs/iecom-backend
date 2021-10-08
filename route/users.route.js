@@ -14,7 +14,6 @@ const { uploadMediaUser } = require('../pkg/image-upload')
   
     app.post(
       "/api/users",
-      [uploadMediaUser],
       controller.create
     );
 

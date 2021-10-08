@@ -61,9 +61,21 @@ const uploadMediaEvent=(req,res,next)=>{
     })
 }
 
+const uploadSingleFIle=(req,res)=>{
+    if(req.headers.key=process.env.Pass){
+        upload(req,res,err =>{
+            if(err){
+                return err
+            }
+            return (res.status(200).json({link:req.files[0].location}))
+        })
+    }
+    
+}
 module.exports={
     uploadMediaUser,
     uploadMediaTeam,
-    uploadMediaEvent
+    uploadMediaEvent,
+    uploadSingleFIle
 
 }

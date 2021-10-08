@@ -48,13 +48,13 @@ module.exports ={
                 message: "email has already exist"
             }))
         }
-        if(!req.image){
-            return (res.status(400).json({
-                status: "FAILED",
-                data:test,
-                message: "image not found"
-            }))
-        }
+        // if(!req.image){
+        //     return (res.status(400).json({
+        //         status: "FAILED",
+        //         data:test,
+        //         message: "image not found"
+        //     }))
+        // }
         const user =new User({
             email:req.body.email,
             password: encryptedPassword,
@@ -62,7 +62,7 @@ module.exports ={
             university: req.body.university,
             phone:req.body.phone,
             major:req.body.major,
-            image:req.image,
+            image:req.body.image,
             status:"Pending",
             act_token:token,
         })

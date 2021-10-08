@@ -5,7 +5,7 @@ const cors = require('cors');
 const app=express();
 const swaggerJsDoc = require('swagger-jsdoc')
 const swaggerUi = require('swagger-ui-express')
-const { uploadMedia } = require('./pkg/image-upload');
+const { uploadMedia, uploadSingleFIle } = require('./pkg/image-upload');
 const dotenv = require('dotenv');
 const swaggerOptions ={
   swaggerDefinition:{
@@ -48,6 +48,7 @@ require('./route/users.route')(app);
 require('./route/teams.route')(app);
 require('./route/essays.route')(app);
 require('./route/event-regist.route')(app);
+app.post("/api/uploads",uploadSingleFIle)
 const path = require('path');
 
 const fs = require('fs');
