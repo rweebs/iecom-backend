@@ -142,7 +142,7 @@ module.exports ={
                 }))
             }
             if(user.status==="Pending"){
-                return (res.status(401).json({
+                return (res.status(403).json({
                     status: "FAILED",
                     message: "account hasn't been verified"
                 }))
