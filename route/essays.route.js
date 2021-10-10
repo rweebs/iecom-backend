@@ -14,7 +14,7 @@ module.exports = function(app) {
   app.post(
     "/api/essays/create",
     [
-      authJwt.verifyToken,uploadMediaTeam
+      authJwt.verifyToken
     ],
     controller.create
   );

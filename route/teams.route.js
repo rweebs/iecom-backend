@@ -14,7 +14,7 @@ module.exports = function(app) {
   app.post(
     "/api/teams/create",
     [
-      authJwt.verifyToken,uploadMediaTeam
+      authJwt.verifyToken
     ],
     controller.create
   );

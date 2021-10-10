@@ -24,7 +24,7 @@ module.exports ={
             member:user1,
             name:req.body.member1_name,
             university_id:req.body.member1_university_id,
-            university_id_link:req.member1_university_id,
+            university_id_link:req.body.member1_university_id_link,
             id_line:req.body.member1_id_line,
             wa:req.body.member1_wa,
             wa_number:req.body.member1_wa_number
@@ -33,7 +33,7 @@ module.exports ={
             member:user2,
             name:req.body.member2_name,
             university_id:req.body.member2_university_id,
-            university_id_link:req.member2_university_id,
+            university_id_link:req.body.member2_university_id_link,
             id_line:req.body.member2_id_line,
             wa:req.body.member2_wa,
             wa_number:req.body.member2_wa_number
@@ -44,7 +44,7 @@ module.exports ={
                 member:user3,
                 name:req.body.member3_name,
                 university_id:req.body.member3_university_id,
-                university_id_link:req.member3_university_id,
+                university_id_link:req.body.member3_university_id_link,
                 id_line:req.body.member3_id_line,
                 wa:req.body.member3_wa,
                 wa_number:req.body.member3_wa_number
@@ -59,7 +59,7 @@ module.exports ={
             name: req.body.team_name,
             member:members,
             university:req.body.university,
-            payment_link:req.payment,
+            payment_link:req.body.payment_link,
             card_holder:req.body.cardholder,
             bank_account:req.body.bank_account,
             status:"Pending",

@@ -24,7 +24,7 @@ module.exports ={
         const registrant = new EventRegist({
             member:member,
             event:event,
-            payment_link:req.payment,
+            payment_link:req.body.payment_link,
             status:"Pending",
         })
 
