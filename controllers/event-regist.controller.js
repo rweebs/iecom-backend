@@ -5,7 +5,7 @@ const dotenv = require('dotenv');
 const EventRegist = require('../models/event-regist');
 const Event = require('../models/event');
 const {uploadMediaEvent} = require('../pkg/image-upload')
-var mailgun = require('mailgun-js')({apiKey: process.env.API_KEY, domain: "admin.bistleague.com"});
+var mailgun = require('mailgun-js')({apiKey: process.env.API_KEY, domain: "iecom.id"});
 
 // get config vars
 dotenv.config();
@@ -30,7 +30,7 @@ module.exports ={
 
         // try{
         // const data = {
-        //     from: 'Admin Bist League <noreply@admin.bistleague.com>',
+        //     from: 'Admin IECOM <noreply@iecom.id>',
         //     to: req.body.member1.email,
         //     cc:'rahmat.wibowo21@gmail.com',
         //     subject: 'Registered',
@@ -86,7 +86,7 @@ module.exports ={
 
         // try{
         // const data = {
-        //     from: 'Admin Bist League <noreply@admin.bistleague.com>',
+        //     from: 'Admin IECOM <noreply@iecom.id>',
         //     to: req.body.member1.email,
         //     cc:'rahmat.wibowo21@gmail.com',
         //     subject: 'Registered',

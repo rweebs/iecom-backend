@@ -8,7 +8,7 @@ const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
 const { set } = require('mongoose');
 const email=require('../views/user-verification')
-var mailgun = require('mailgun-js')({apiKey: process.env.API_KEY, domain: "admin.bistleague.com"});
+var mailgun = require('mailgun-js')({apiKey: process.env.API_KEY, domain: "iecom.id"});
 const nodemailer = require('nodemailer')
 let transport = nodemailer.createTransport({
   host: "smtp.pepipost.com",
@@ -69,7 +69,7 @@ module.exports ={
         
         try{
         const data = {
-            from: 'Admin Bist League <noreply@admin.bistleague.com>',
+            from: 'Admin IECOM <noreply@iecom.id>',
             to: req.body.email,
             subject: 'Accepted',
             html:email.message(req.body.name,`https://iecom-backend-dev.herokuapp.com/api/users/activate?token=${token}`)

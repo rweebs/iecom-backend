@@ -7,7 +7,7 @@ const fs = require('fs');
 const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
 const Competition = require('../models/competition');
-var mailgun = require('mailgun-js')({apiKey: process.env.API_KEY, domain: "admin.bistleague.com"});
+var mailgun = require('mailgun-js')({apiKey: process.env.API_KEY, domain: "iecom.id"});
 
 // get config vars
 dotenv.config();
@@ -77,7 +77,7 @@ module.exports ={
                 else{
                     try{
                     const data = {
-                        from: 'Admin Bist League <noreply@admin.bistleague.com>',
+                        from: 'Admin IECOM <noreply@iecom.id>',
                         to: req.email,
                         subject: 'Registration under review',
                         html:pending(req.body.team_name)
@@ -138,7 +138,7 @@ module.exports ={
         }
         try{
             const data = {
-                from: 'Admin Bist League <noreply@admin.bistleague.com>',
+                from: 'Admin IECOM <noreply@iecom.id>',
                 to: user1.email,
                 subject: 'Registration success',
                 html:success(req.query.name)
