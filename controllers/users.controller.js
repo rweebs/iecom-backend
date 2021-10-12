@@ -132,41 +132,84 @@ module.exports ={
             )
       
     },
-    login: async (req,res)=>{
-        const password = req.body.password;    
-        const user = await User.findOne({email:req.body.email})
-            if(user===null){
-                return (res.status(404).json({
-                    status: "FAILED",
-                    message: "email is not registered"
-                }))
-            }
-            if(user.status==="Pending"){
-                return (res.status(403).json({
-                    status: "FAILED",
-                    message: "account hasn't been verified"
-                }))
-            }
-            
-            
-        
+    login: async (req, res) => {
+        const password = req.body.password;
+        const user = await User.findOne({
+            email: req.body.email
+        })
+        if (user === null) {
+            return (res.status(404).json({
+                status: "FAILED",
+                message: "email is not registered"
+            }))
+        }
+        if (user.status === "Pending") {
+            return (res.status(403).json({
+                status: "FAILED",
+                message: "account hasn't been verified"
+            }))
+        }
+    
+    
+    
         const comparison = await bcrypt.compare(password, user.password)
-                if(!comparison){
-                    return (res.status(401).json({
-                        status: "FAILED",
-                        message: "email and password didn't match"
-                    }) ) 
+        if (!comparison) {
+            return (res.status(401).json({
+                status: "FAILED",
+                message: "email and password didn't match"
+            }))
+        } else {
+            const token = generateAccessToken({
+                email: req.body.email
+            });
+            let competition = []
+            let event = []
+            for (const element of user.competition) {
+                const temp = await Competition.findById(element.competition)
+                const team_name = element.team_name
+                const name = []
+                for (const member of element.member) {
+                    name.push(member.name)
                 }
-                else{
-                    const token = generateAccessToken({ email: req.body.email });
-                    return (res.status(200).json({
-                        status: "SUCCESS",
-                        message: "user is successfully login",
-                        token:token
-                    }))
+                result = {
+                    name: temp.name,
+                    stage: temp.stage,
+                    isAvailable: temp.isAvailable,
+                    team_name: team_name,
+                    members: name
                 }
-
-      
+                competition.push(result)
+            }
+            for (const element of user.event) {
+                const temp = await Event.findById(element)
+                event.push(temp)
+            }
+            const {
+                email,
+                name,
+                university,
+                phone,
+                image
+            } = user
+            const data = {
+                name,
+                email,
+                university,
+                phone,
+                image,
+                competition,
+                event
+            }
+            return (res.status(200).json({
+                status: "SUCCESS",
+                token: token,
+                data
+    
+            }))
+    
+        }
+    
+    
     },
     activate:async (req,res)=>{
         const token=req.query.token
