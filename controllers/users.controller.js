@@ -229,7 +229,7 @@ module.exports ={
                     message: err.message
                 }))
             }
-            return ( res.redirect(301, 'https://bistleague.com'))
+            return ( res.redirect(301, 'https://iecom.asia?login=true'))
         })
     },
     get:async(req,res)=>{

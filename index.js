@@ -29,7 +29,7 @@ dotenv.config();
 const competitionRouter=require('./route/competition.route')
 const eventRouter=require('./route/events.route')
 app.use(cors({
-    origin: ['http://localhost:3000','https://bist-dev.herokuapp.com','https://bistleague.azurewebsites.net','https://bistleague.com']
+    origin: ['http://localhost:3000','https://bist-dev.herokuapp.com','https://bistleague.azurewebsites.net','https://bistleague.com','https://iecom-preview.vercel.app','https://iecom.asia','https://www.iecom.asia']
   }));
 
 //established mongoose connection
