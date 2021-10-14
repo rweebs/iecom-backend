@@ -21,19 +21,29 @@ const { uploadMediaUser } = require('../pkg/image-upload')
         "/api/login",
         controller.login
       );
+    
+    app.post(
+        "/api/reset",
+        controller.reset
+      );
 
     app.get(
       "/api/users/activate",
       controller.activate
     );
 
-      app.get(
-        "/api/users",
-        [
-          authJwt.verifyToken
-        ],
-        controller.get
-      );
+    app.get(
+      "/api/users/reset",
+      controller.activate_reset
+    );
+
+    app.get(
+      "/api/users",
+       [
+         authJwt.verifyToken
+       ],
+       controller.get
+    );
   
   };
 

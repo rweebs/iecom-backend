@@ -278,5 +278,81 @@ module.exports ={
             data
 
         }))
+    },    reset: async (req,res)=>{
+        let encryptedPassword;
+        try{
+            const password = req.body.password;    
+            encryptedPassword = await bcrypt.hash(password, saltRounds)
+        }
+        
+        catch (err){
+            res.status(400).json({
+                status: "FAILED",
+                message: err.message
+            })
+        }  
+        const user = await User.findOne({email:req.body.email})
+            if(user===null){
+                return (res.status(404).json({
+                    status: "FAILED",
+                    message: "email is not registered"
+                }))
+            }
+            
+            try{
+                const data = {
+                    from: 'Admin IECOM <noreply@iecom.id>',
+                    to: req.body.email,
+                    subject: 'Reset Password',
+                    html:email.reset(user.name,`https://iecom-backend.azurewebsites.net/api/users/reset?hash=${encryptedPassword}&email=${req.body.email}`)
+                  };
+                  
+                  mailgun.messages().send(data, (error, body) => {
+                    return(res.status(200).json({
+                        status: "SUCCESS",
+                        message: "reset password successfully"
+                    }))
+                  });
+                }
+                catch (err){
+                    return(res.status(400).json({
+                        status: "FAILED",
+                        message: err.message
+                    }))
+                }
+            
+    },
+    activate_reset:async (req,res)=>{
+        let hash;
+        let email;
+        try{
+            hash=req.query.hash;
+            email=req.query.email;    
+        }
+        catch(e){
+            return (res.status(404).json({
+                status: "FAILED",
+                message: err.message
+            }))
+        }
+        
+        const user= await User.findOne({email:email})
+        if(user===null){
+            return (res.status(404).json({
+                status: "FAILED",
+                message: "email is not valid"
+            }))
+        }
+        User.updateOne({email:email},{password:hash})
+        .then((user,err)=>{
+            if(err){
+                return (res.status(404).json({
+                    status: "FAILED",
+                    message: err.message
+                }))
+            }
+            return ( res.redirect(301, 'https://iecom.asia?login=true'))
+        })
+        
     },
 }
