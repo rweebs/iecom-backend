@@ -28,7 +28,7 @@ module.exports={
         <br>
         <p class="message black" style="font-style: normal; font-weight: 500; font-size: 18px; line-height: 27px; color: #000000;">Best Regards</p>
         <p class="message black" style="font-style: normal; font-weight: 500; font-size: 18px; line-height: 27px; color: #000000;">IECOM 2022</p>
-        <p class="message black" style="font-style: normal; font-weight: 500; font-size: 18px; line-height: 27px; color: #000000;"><b>Email | Mobile</b></p>
+        <p class="message black" style="font-style: normal; font-weight: 500; font-size: 18px; line-height: 27px; color: #000000;"><b>official@iecom.asia | +62 81310014646</b></p>
         <p class="message black" style="font-style: normal; font-weight: 500; font-size: 18px; line-height: 27px; color: #000000;"><b>Bandung Institute of Technology</b></p>
     </div>
 </body>
@@ -64,7 +64,7 @@ module.exports={
         <br>
         <p class="message black" style="font-style: normal; font-weight: 500; font-size: 18px; line-height: 27px; color: #000000;">Best Regards</p>
         <p class="message black" style="font-style: normal; font-weight: 500; font-size: 18px; line-height: 27px; color: #000000;">IECOM 2022</p>
-        <p class="message black" style="font-style: normal; font-weight: 500; font-size: 18px; line-height: 27px; color: #000000;"><b>Email | Mobile</b></p>
+        <p class="message black" style="font-style: normal; font-weight: 500; font-size: 18px; line-height: 27px; color: #000000;"><b>official@iecom.asia | +62 81310014646</b></p>
         <p class="message black" style="font-style: normal; font-weight: 500; font-size: 18px; line-height: 27px; color: #000000;"><b>Bandung Institute of Technology</b></p>
     </div>
 </body>
