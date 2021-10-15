@@ -44,6 +44,13 @@ const { uploadMediaUser } = require('../pkg/image-upload')
        ],
        controller.get
     );
-  
+
+    app.patch(
+      "/api/users",
+       [
+         authJwt.verifyToken
+       ],
+       controller.update
+    );
   };
 
