@@ -326,7 +326,7 @@ module.exports ={
                     from: 'Admin IECOM <noreply@iecom.id>',
                     to: req.body.email,
                     subject: 'Reset Password',
-                    html:email.reset(user.name,`https://iecom-backend.azurewebsites.net/api/users/reset?hash=${encryptedPassword}&email=${req.body.email}`)
+                    html:email.reset(user.name,`https://iecom-backend.herokuapp.com/api/users/reset?hash=${encryptedPassword}&email=${req.body.email}`)
                   };
                   
                   mailgun.messages().send(data, (error, body) => {
