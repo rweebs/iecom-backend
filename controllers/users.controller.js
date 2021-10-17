@@ -377,4 +377,51 @@ module.exports ={
         })
         
     },
+    profile:async(req,res)=>{
+        
+        const user= await User.findOne({email:req.email})
+        if(!user){
+            return (res.status(404).json({
+                status: "FAILED",
+                message: err.message
+            }))
+        }
+        let competition=[]
+        let event=[]
+        for (const element of user.competition) {
+                const temp = await Competition.findById(element.competition)
+                const team_name=element.team_name
+                const name =[]
+                for (const member of element.member){
+                    name.push(member.name)
+                }
+                result={
+                    name:temp.name,
+                    stage:temp.stage,
+                    isAvailable:temp.isAvailable,
+                    team_name:team_name,
+                    members:name
+                }
+                competition.push(result)
+        }
+        for (const element of user.event) {
+                const temp = await Event.findById(element)
+                event.push(temp)
+        }
+        const {email,name,university,phone,image}=user
+        const data={
+            name,
+            email,
+            university,
+            phone,
+            image,
+            competition,
+            event
+        }
+        return (res.status(200).json({
+            status: "SUCCESS",
+            data
+
+        }))
+    },
 }
