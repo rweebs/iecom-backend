@@ -73,7 +73,7 @@ module.exports ={
             from: 'Admin IECOM <noreply@iecom.id>',
             to: email,
             subject: 'Accepted',
-            html:mail.message(req.body.name,`https://iecom-backend-dev.herokuapp.com/api/users/activate?token=${token}`)
+            html:mail.message(req.body.name,`https://iecom-backend.herokuapp.com/api/users/activate?token=${token}`)
           };
           
           mailgun.messages().send(data, (error, body) => {
@@ -97,7 +97,7 @@ module.exports ={
         //             from:'embedded@pepisandbox.com',
         //             to:req.body.email,
         //             subject:'Verification',
-        //             html:email.message(req.body.name,`https://iecom-backend-dev.herokuapp.com/api/activate?token=${token}`)
+        //             html:email.message(req.body.name,`https://iecom-backend.herokuapp.com/api/activate?token=${token}`)
         //         };
         //         transport.sendMail(message,(err,info)=>{
         //             if(err){
