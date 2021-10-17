@@ -7,7 +7,7 @@ const fs = require('fs');
 const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
 const { set } = require('mongoose');
-const email=require('../views/user-verification')
+const mail=require('../views/user-verification')
 var mailgun = require('mailgun-js')({apiKey: process.env.API_KEY, domain: "iecom.id"});
 const nodemailer = require('nodemailer')
 let transport = nodemailer.createTransport({
@@ -73,7 +73,7 @@ module.exports ={
             from: 'Admin IECOM <noreply@iecom.id>',
             to: email,
             subject: 'Accepted',
-            html:email.message(req.body.name,`https://iecom-backend-dev.herokuapp.com/api/users/activate?token=${token}`)
+            html:mail.message(req.body.name,`https://iecom-backend-dev.herokuapp.com/api/users/activate?token=${token}`)
           };
           
           mailgun.messages().send(data, (error, body) => {
@@ -332,7 +332,7 @@ module.exports ={
                     from: 'Admin IECOM <noreply@iecom.id>',
                     to: req.body.email,
                     subject: 'Reset Password',
-                    html:email.reset(user.name,`https://iecom-backend.herokuapp.com/api/users/reset?hash=${encryptedPassword}&email=${req.body.email}`)
+                    html:mail.reset(user.name,`https://iecom-backend.herokuapp.com/api/users/reset?hash=${encryptedPassword}&email=${req.body.email}`)
                   };
                   
                   mailgun.messages().send(data, (error, body) => {
