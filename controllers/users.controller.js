@@ -240,12 +240,13 @@ module.exports ={
                 message: err.message
             }))
         }
-        const {email,name,university,phone,image}=user
+        const {email,name,university,major,phone,image}=user
         const data={
             name,
             email,
             university,
             phone,
+            major,
             image
         }
         return (res.status(200).json({
@@ -262,7 +263,7 @@ module.exports ={
                 message: err.message
             }))
         }
-        let {email,name,university,phone,image}=user
+        let {email,name,university,phone,image,major}=user
         if(req.body.name){
             name=req.body.name
         }
@@ -278,10 +279,14 @@ module.exports ={
         if(req.body.image){
             image=req.body.image
         }
+        if(req.body.major){
+            major=req.body.major
+        }
         const data={
             name,
             email,
             university,
+            major,
             phone,
             image
         }
