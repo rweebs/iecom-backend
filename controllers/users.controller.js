@@ -40,7 +40,8 @@ module.exports ={
             })
         }
         const token=require('crypto').randomBytes(64).toString('hex')
-        const test= await User.findOne({email:req.body.email})
+        const email = req.body.email.toLowerCase()
+        const test= await User.findOne({email:email})
         if(test){
             return (res.status(400).json({
                 status: "FAILED",
@@ -56,7 +57,7 @@ module.exports ={
         //     }))
         // }
         const user =new User({
-            email:req.body.email,
+            email:email,
             password: encryptedPassword,
             name:req.body.name,
             university: req.body.university,
@@ -70,7 +71,7 @@ module.exports ={
         try{
         const data = {
             from: 'Admin IECOM <noreply@iecom.id>',
-            to: req.body.email,
+            to: email,
             subject: 'Accepted',
             html:email.message(req.body.name,`https://iecom-backend-dev.herokuapp.com/api/users/activate?token=${token}`)
           };
@@ -135,7 +136,7 @@ module.exports ={
     login: async (req, res) => {
         const password = req.body.password;
         const user = await User.findOne({
-            email: req.body.email
+            email: req.body.email.toLowerCase()
         })
         if (user === null) {
             return (res.status(404).json({
@@ -160,7 +161,7 @@ module.exports ={
             }))
         } else {
             const token = generateAccessToken({
-                email: req.body.email
+                email: req.body.email.toLowerCase()
             });
             let competition = []
             let event = []
