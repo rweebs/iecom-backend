@@ -16,9 +16,28 @@ module.exports ={
     create: async (req,res)=>{
         const user1= await User.findOne({email:req.email})
         const user2= await User.findOne({email:req.body.member2_email})
+        
         let user3;
         if(req.body.member3_email){
             user3= await User.findOne({email:req.body.member3_email})
+            if(!user2 && !user3){
+                return(res.status(404).json({
+                    status: "FAILED",
+                    message: "Member 1's and Member 2s'email have not been registered yet on our website"
+                }))
+            }
+            if(!user3){
+                return(res.status(404).json({
+                    status: "FAILED",
+                    message: "Member 2's email has not been registered yet on our website"
+                }))
+            }
+        }
+        if(!user2){
+            return(res.status(404).json({
+                status: "FAILED",
+                message: "Member 1's email has not been registered yet on our website"
+            }))
         }
         const member1= new Member({
             member:user1,
