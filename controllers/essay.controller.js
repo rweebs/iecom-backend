@@ -14,30 +14,16 @@ var mailgun = require('mailgun-js')({apiKey: process.env.API_KEY, domain: "iecom
 dotenv.config();
 module.exports ={
     create: async (req,res)=>{
-        const user1= await User.findOne({email:req.email})
-        const user2= await User.findOne({email:req.body.member2_email})
-        
-        let user3;
-        if(req.body.member3_email){
-            user3= await User.findOne({email:req.body.member3_email})
-            if(!user2 && !user3){
+        const user1= await User.findOne({email:req.email})        
+        let user2;
+        if(req.body.member2_email){
+            user2= await User.findOne({email:req.body.member2_email})
+            if(!user2){
                 return(res.status(404).json({
                     status: "FAILED",
-                    message: "Member 1's and Member 2s'email have not been registered yet on our website"
+                    message: "Member 1's email has not been registered yet on our website"
                 }))
             }
-            if(!user3){
-                return(res.status(404).json({
-                    status: "FAILED",
-                    message: "Member 2's email has not been registered yet on our website"
-                }))
-            }
-        }
-        if(!user2){
-            return(res.status(404).json({
-                status: "FAILED",
-                message: "Member 1's email has not been registered yet on our website"
-            }))
         }
         const member1= new Member({
             member:user1,
@@ -48,32 +34,23 @@ module.exports ={
             wa:req.body.member1_wa,
             wa_number:req.body.member1_wa_number
         })
-        const member2= new Member( {
-            member:user2,
-            name:req.body.member2_name,
-            university_id:req.body.member2_university_id,
-            university_id_link:req.body.member2_university_id_link,
-            id_line:req.body.member2_id_line,
-            wa:req.body.member2_wa,
-            wa_number:req.body.member2_wa_number
-        })
-        let member3;
-        if(req.body.member3_email){
+        let member2;
+        if(req.body.member2_email){
             member3= new Member({
-                member:user3,
-                name:req.body.member3_name,
-                university_id:req.body.member3_university_id,
-                university_id_link:req.body.member3_university_id_link,
-                id_line:req.body.member3_id_line,
-                wa:req.body.member3_wa,
-                wa_number:req.body.member3_wa_number
+                member:user2,
+                name:req.body.member2_name,
+                university_id:req.body.member2_university_id,
+                university_id_link:req.body.member2_university_id_link,
+                id_line:req.body.member2_id_line,
+                wa:req.body.member2_wa,
+                wa_number:req.body.member2_wa_number
             })
         }
         let members;
         
-        members=[member1,member2]
-        if (req.body.member3_email){
-            members=[member1,member2,member3]
+        members=[member1]
+        if (req.body.member2_email){
+            members=[member1,member2]
         }
         const team = new Essay({
             name: req.body.team_name,
