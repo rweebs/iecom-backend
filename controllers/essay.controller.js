@@ -103,6 +103,12 @@ module.exports ={
         let member=[]
         const competition= await Competition.findOne({name:"ESSAY COMPETITION"})
         const team = await Essay.findOne({name:req.query.name,status:"Pending"})
+        if(!team){
+            return (res.status(404).json({
+                status: "FAILED",
+                message: "team not found"
+            }))
+        }
         for (const element of team.member) {
             member.push({name:element.name})
         }
@@ -111,17 +117,9 @@ module.exports ={
             team_name:req.query.name,
             member:member
         })
-        
-        if(!team){
-            return (res.status(404).json({
-                status: "FAILED",
-                message: "team not found"
-            }))
-        }
         const user1 = await User.findByIdAndUpdate(team.member[0].member,{"$push": {"competition": teams}})
-        const user2 = await User.findByIdAndUpdate(team.member[1].member,{"$push": {"competition": teams}})
-        if(team.member.length==3){
-            const user3 = await User.findByIdAndUpdate(team.member[2].member,{"$push": {"competition": teams}})
+        if(team.member.length==2){
+            const user2 = await User.findByIdAndUpdate(team.member[2].member,{"$push": {"competition": teams}})
         }
         try{
         const team =await Essay.updateOne({name:req.query.name},{status:"Verified"})
