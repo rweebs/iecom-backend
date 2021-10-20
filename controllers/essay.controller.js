@@ -119,7 +119,7 @@ module.exports ={
         })
         const user1 = await User.findByIdAndUpdate(team.member[0].member,{"$push": {"competition": teams}})
         if(team.member.length==2){
-            const user2 = await User.findByIdAndUpdate(team.member[2].member,{"$push": {"competition": teams}})
+            const user2 = await User.findByIdAndUpdate(team.member[1].member,{"$push": {"competition": teams}})
         }
         try{
         const team =await Essay.updateOne({name:req.query.name},{status:"Verified"})
