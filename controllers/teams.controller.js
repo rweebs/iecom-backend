@@ -60,7 +60,7 @@ module.exports ={
             wa_number:req.body.member2_wa_number
         })
         let member3;
-        if(req.body.member3){
+        if(req.body.member3_email){
             member3= new Member({
                 member:user3,
                 name:req.body.member3_name,
@@ -73,10 +73,10 @@ module.exports ={
             })
         }
         let members;
-        if (req.body.member3){
+        members=[member1,member2]
+        if (req.body.member3_email){
             members=[member1,member2,member3]
         }
-        members=[member1,member2]
         const team = new Team({
             name: req.body.team_name,
             member:members,
