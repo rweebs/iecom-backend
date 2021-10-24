@@ -35,7 +35,7 @@ module.exports={
 </html>
     `)
     },
-    success:(name)=>{
+    success:(name,webinar)=>{
         return(
     `
     <!DOCTYPE html>
@@ -55,7 +55,7 @@ module.exports={
         <p class="message black" style="font-style: normal; font-weight: 500; font-size: 18px; line-height: 27px; color: #000000;">Hello,${name}</p>
         <br>
         <p class="message black" style="font-style: normal; font-weight: 500; font-size: 18px; line-height: 27px; color: #000000;">
-            IECOM 2022 firstly would like to thank you for your excitement in joining IECOM 2022 Competition. We would like to inform you that <b>your team registration is successfull.</b> The competition details can be accessed through the guidebook than can be accessed from our website.
+            IECOM 2022 firstly would like to thank you for your excitement in joining IECOM 2022 Competition. We would like to inform you that <b>you have successfully registered as ${webinar}'s participant.</b> 
         </p>
 
         <p class="message black" style="font-style: normal; font-weight: 500; font-size: 18px; line-height: 27px; color: #000000;">

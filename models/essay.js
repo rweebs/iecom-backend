@@ -40,6 +40,9 @@ const essaySchema = new Schema({
         type :String,
         required: true
     },
+    referral:{
+        type: String
+    },
     status:{
         type:String,
         enum:["Pending","Verified","Passed","Failed"],

@@ -46,7 +46,8 @@ module.exports ={
             university_id_link:req.body.member1_university_id_link,
             id_line:req.body.member1_id_line,
             wa:req.body.member1_wa,
-            wa_number:req.body.member1_wa_number
+            wa_number:req.body.member1_wa_number,
+            post:req.body.member1_post
         })
         const member2= new Member( {
             member:user2,
@@ -55,6 +56,7 @@ module.exports ={
             university_id_link:req.body.member2_university_id_link,
             id_line:req.body.member2_id_line,
             wa:req.body.member2_wa,
+            post:req.body.member2_post,
             wa_number:req.body.member2_wa_number
         })
         let member3;
@@ -66,7 +68,8 @@ module.exports ={
                 university_id_link:req.body.member3_university_id_link,
                 id_line:req.body.member3_id_line,
                 wa:req.body.member3_wa,
-                wa_number:req.body.member3_wa_number
+                wa_number:req.body.member3_wa_number,
+                post:req.body.member3_post
             })
         }
         let members;
@@ -81,6 +84,7 @@ module.exports ={
             payment_link:req.body.payment_link,
             card_holder:req.body.cardholder,
             bank_account:req.body.bank_account,
+            post:req.body.referral,
             status:"Pending",
         })
 

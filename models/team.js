@@ -39,6 +39,9 @@ const memberSchema = new Schema({
     wa_number:{
         type:String,
         required:true
+    },
+    post:{
+        type:String
     }
 })
 
@@ -68,6 +71,9 @@ const teamSchema = new Schema({
         required:true
     },
     payment_link:{
+        type:String
+    },
+    post:{
         type:String
     },
     score:{

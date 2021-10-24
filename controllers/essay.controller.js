@@ -59,6 +59,7 @@ module.exports ={
             payment_link:req.body.payment_link,
             card_holder:req.body.cardholder,
             bank_account:req.body.bank_account,
+            referral:req.body.referral,
             status:"Pending",
         })
 

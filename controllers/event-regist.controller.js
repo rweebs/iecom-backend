@@ -5,6 +5,7 @@ const dotenv = require('dotenv');
 const EventRegist = require('../models/event-regist');
 const Event = require('../models/event');
 const {uploadMediaEvent} = require('../pkg/image-upload')
+const {success} = require('../views/event')
 var mailgun = require('mailgun-js')({apiKey: process.env.API_KEY, domain: "iecom.id"});
 
 // get config vars
@@ -76,6 +77,13 @@ module.exports ={
                 message: 'event not found'
             }))
         }
+        const register= await EventRegist.findOne({member:member,event:event})
+        if(register){
+            return(res.status(404).json({
+                status: "FAILED",
+                message: 'You have already registered to the event'
+            }))
+        }
         const user = await User.updateOne({email:req.email},{"$push": {"event": event}})
         const registrant = new EventRegist({
             member:member,
@@ -84,28 +92,7 @@ module.exports ={
             status:"Verified",
         })
 
-        // try{
-        // const data = {
-        //     from: 'Admin IECOM <noreply@iecom.id>',
-        //     to: req.body.member1.email,
-        //     cc:'rahmat.wibowo21@gmail.com',
-        //     subject: 'Registered',
-        //     text: `Dear ${(req.body.team_name).toUpperCase()},
-
-        //     Please wait for confirmation
-        //     `
-        //   };
-          
-        //   mailgun.messages().send(data, (error, body) => {
-            
-        //   });
-        // }
-        // catch (err){
-        //     return(res.status(400).json({
-        //         status: "FAILED",
-        //         message: err.message
-        //     }))
-        // }
+        
         await registrant.save((err,result)=>{
                 if(err){
                     return(res.status(400).json({
@@ -114,10 +101,29 @@ module.exports ={
                     }))
                 }
                 else{
-                    return(res.status(200).json({
-                        status:"SUCCESS",
-                        message:"Event Successfully Registered",
-                    }))
+                    try{
+                        const data = {
+                            from: 'Admin IECOM <noreply@iecom.id>',
+                            to: req.email,
+                            cc:'rahmat.wibowo21@gmail.com',
+                            subject: 'Event Registration Successful',
+                            html: success(member.name,event.theme+" "+event.title)
+                          };
+                          
+                          mailgun.messages().send(data, (error, body) => {
+                            return(res.status(200).json({
+                                status:"SUCCESS",
+                                message:"Event Successfully Registered",
+                            }))
+                          });
+                        }
+                        catch (err){
+                            return(res.status(400).json({
+                                status: "FAILED",
+                                message: err.message
+                            }))
+                        }
+                    
                 }
             })
 
