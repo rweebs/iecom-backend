@@ -36,7 +36,7 @@ module.exports ={
         })
         let member2;
         if(req.body.member2_email){
-            member3= new Member({
+            member2= new Member({
                 member:user2,
                 name:req.body.member2_name,
                 university_id:req.body.member2_university_id,
