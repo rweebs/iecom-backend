@@ -23,11 +23,11 @@ module.exports = function(app) {
     controller.activate
   );
   app.get(
-    "/api/teams/populate",
+    "/api/teams/mcq/populate",
     controller.populate
   );
   app.get(
-    "/api/teams",
+    "/api/teams/mcq/all",
     [
       authJwt.verifyToken,
       GetTeamName.competitionTeam
@@ -35,14 +35,74 @@ module.exports = function(app) {
     controller.getQuestion
   );
 
-  app.get(
-    "/api/teams/question",
+  app.post(
+    "/api/teams/mcq",
     [
       authJwt.verifyToken,
       GetTeamName.competitionTeam
     ],
     controller.answer
   );
-  
+
+  app.get(
+    "/api/teams/mcq",
+    [
+      authJwt.verifyToken,
+      GetTeamName.competitionTeam
+    ],
+    controller.question
+  );
+  app.get(
+    "/api/teams/tf/all",
+    [
+      authJwt.verifyToken,
+      GetTeamName.competitionTeam
+    ],
+    controller.getQuestion_tf
+  );
+
+  app.post(
+    "/api/teams/tf",
+    [
+      authJwt.verifyToken,
+      GetTeamName.competitionTeam
+    ],
+    controller.answer_tf
+  );
+
+  app.get(
+    "/api/teams/tf",
+    [
+      authJwt.verifyToken,
+      GetTeamName.competitionTeam
+    ],
+    controller.question_tf
+  );
+  app.get(
+    "/api/teams/fitb/all",
+    [
+      authJwt.verifyToken,
+      GetTeamName.competitionTeam
+    ],
+    controller.getQuestion_fitb
+  );
+
+  app.post(
+    "/api/teams/fitb",
+    [
+      authJwt.verifyToken,
+      GetTeamName.competitionTeam
+    ],
+    controller.answer_fitb
+  );
+
+  app.get(
+    "/api/teams/fitb",
+    [
+      authJwt.verifyToken,
+      GetTeamName.competitionTeam
+    ],
+    controller.question_fitb
+  );
 
 };

@@ -2,7 +2,9 @@ const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const {MCQ} = require("../models/mcq")
 const {User,Teams} =require('../models/users')
-const {Team,Member,MCQA} = require('../models/team');
+const TF = require("../models/tf")
+const FITB = require("../models/fitb")
+const {Team,Member,MCQA,TFA,FITBA} = require('../models/team');
 const {pending,success} = require('../views/main-competition')
 const fs = require('fs');
 const jwt = require('jsonwebtoken');
@@ -194,6 +196,9 @@ module.exports ={
                     message: "Team not found"
                 }))
             }
+            let mcqa=[]
+            let tfa=[]
+            let fitba=[]
             
             const mcq= await MCQ.find({})
             // Shuffle array
@@ -202,7 +207,7 @@ module.exports ={
             // Get sub-array of first n elements after shuffled
             let selected = shuffled.slice(0, 3);
 
-            let mcqa=[]
+            
 
             selected.forEach(element => {
                 const temp_mcq=new MCQA(
@@ -212,9 +217,45 @@ module.exports ={
                 mcqa.push(temp_mcq)
                 
             })
+             
+            
+            const tf= await TF.find({})
+            // Shuffle array
+            const shuffled_tf = tf.sort(() => 0.5 - Math.random());
+
+            // Get sub-array of first n elements after shuffled
+            let selected_tf = shuffled_tf.slice(0, 3);
+
+            
+
+            selected_tf.forEach(element => {
+                const temp_tf=new TFA(
+                    {question: element}
+                )
+
+                tfa.push(temp_tf)
+                
+            })
+            const fitb= await FITB.find({})
+            // Shuffle array
+            const shuffled_fitb = fitb.sort(() => 0.5 - Math.random());
+
+            // Get sub-array of first n elements after shuffled
+            let selected_fitb = shuffled_fitb.slice(0, 3);
+
+            
+
+            selected_fitb.forEach(element => {
+                const temp_fitb=new FITB(
+                    {question: element._id}
+                )
+
+                fitba.push(temp_fitb)
+                
+            }) 
             let result
             try{
-            result = await Team.findOneAndUpdate({name:req.body.name},{mcq:mcqa})
+            result = await Team.findOneAndUpdate({name:req.body.name},{mcq:mcqa,tf:tfa,fitb:fitba})
             }
 
             catch(e){
@@ -248,16 +289,16 @@ module.exports ={
                 message: err.message
             }))
         }
-        let mcq =[]
-        for (const element of team.mcq) {
-            const temp = await MCQ.findById(element.question)
-            const {_id,question,choices}=temp
-            answer={_id,question,choices}
-            mcq.push(answer)
+        let tf =[]
+        for (const element of team.tf) {
+            const temp = await TF.findById(element.question)
+            const {_id,question}=temp
+            answer={_id,question}
+            tf.push(answer)
         }
         return(res.status(200).json({
             status: "SUCCESS",
-            data:mcq
+            data:tf
         })) 
 
     },
@@ -273,17 +314,114 @@ module.exports ={
                 message: err.message
             }))
         }
-        let find=false
-        for (const element of team.mcq) {
-            if(element.question.toString()===req.query.id){
-                element.answer=req.query.answer
-                find=true
-            }
-        }
-        if (!find){
+        if (team.tf[req.query.page-1]){
+            team.tf[req.query.page-1].answer=req.query.answer
+        }else{
             return(res.status(400).json({
                 status: "FAILED",
-                message: "That Id doesn't belongs to you"
+                message: "NaN"
+            }))
+        }
+        await team.save((err,result)=>{
+            if(err){
+                return(res.status(400).json({
+                    status: "FAILED",
+                    message: err.message
+                }))
+            }
+            return(res.status(200).json({
+                    status:"SUCCESS",
+                    message:"User Successfully created",
+                    data:result
+                }))
+                
+            }
+        )
+        
+
+    },
+    question: async (req,res)=>{
+        let team
+        try{
+        team = await Team.findOne({name:req.team})
+        
+        }
+        catch(err){
+            return(res.status(400).json({
+                status: "FAILED",
+                message: err.message
+            }))
+        }
+        let question
+        if (team.tf[req.query.page-1]){
+            try{
+                question = await MCQ.findById(team.tf[req.query.page-1].question)
+            }
+            catch(e){
+                return(res.status(400).json({
+                    status: "FAILED",
+                    message: "NaN"
+                }))
+            }
+        }else{
+            return(res.status(400).json({
+                status: "FAILED",
+                message: "NaN"
+            }))
+        }
+        const data ={
+            question:question.question,
+            answer:question.answer
+        }
+        return(res.status(200).json({
+            status:"SUCCESS",
+            data:data
+        }))
+
+    },
+    getQuestion_tf: async (req,res)=>{
+        let team
+        try{
+        team = await Team.findOne({name:req.team})
+        
+        }
+        catch(err){
+            return(res.status(400).json({
+                status: "FAILED",
+                message: err.message
+            }))
+        }
+        let tf =[]
+        for (const element of team.tf) {
+            const temp = await TF.findById(element.question)
+            const {_id,question}=temp
+            answer={_id,question}
+            tf.push(answer)
+        }
+        return(res.status(200).json({
+            status: "SUCCESS",
+            data:tf
+        })) 
+
+    },
+    answer_tf: async (req,res)=>{
+        let team
+        try{
+        team = await Team.findOne({name:req.team})
+        
+        }
+        catch(err){
+            return(res.status(400).json({
+                status: "FAILED",
+                message: err.message
+            }))
+        }
+        if (team.tf[req.query.page-1]){
+            team.tf[req.query.page-1].answer=req.query.answer
+        }else{
+            return(res.status(400).json({
+                status: "FAILED",
+                message: "NaN"
             }))
         }
         await team.save((err,result)=>{
@@ -302,6 +440,145 @@ module.exports ={
             }
         )
         
+
+    },
+    question_tf: async (req,res)=>{
+        let team
+        try{
+        team = await Team.findOne({name:req.team})
+        
+        }
+        catch(err){
+            return(res.status(400).json({
+                status: "FAILED",
+                message: err.message
+            }))
+        }
+        let question
+        if (team.tf[req.query.page-1]){
+            try{
+                question = await TF.findById(team.tf[req.query.page-1].question)
+            }
+            catch(e){
+                return(res.status(400).json({
+                    status: "FAILED",
+                    message: "NaN"
+                }))
+            }
+        }else{
+            return(res.status(400).json({
+                status: "FAILED",
+                message: "NaN"
+            }))
+        }
+        const data ={
+            question:question.question
+        }
+        return(res.status(200).json({
+            status:"SUCCESS",
+            data:data
+        }))
+
+    },
+    getQuestion_fitb: async (req,res)=>{
+        let team
+        try{
+        team = await Team.findOne({name:req.team})
+        
+        }
+        catch(err){
+            return(res.status(400).json({
+                status: "FAILED",
+                message: err.message
+            }))
+        }
+        let fitb =[]
+        for (const element of team.fitb) {
+            const temp = await FITB.findById(element.question)
+            const {_id,question}=temp
+            answer={_id,question}
+            fitb.push(answer)
+        }
+        return(res.status(200).json({
+            status: "SUCCESS",
+            data:fitb
+        })) 
+
+    },
+    answer_fitb: async (req,res)=>{
+        let team
+        try{
+        team = await Team.findOne({name:req.team})
+        
+        }
+        catch(err){
+            return(res.status(400).json({
+                status: "FAILED",
+                message: err.message
+            }))
+        }
+        if (team.fitb[req.query.page-1]){
+            team.fitb[req.query.page-1].answer=req.query.answer
+        }else{
+            return(res.status(400).json({
+                status: "FAILED",
+                message: "NaN"
+            }))
+        }
+        await team.save((err,result)=>{
+            if(err){
+                return(res.status(400).json({
+                    status: "FAILED",
+                    message: err.message
+                }))
+            }
+            return(res.status(200).json({
+                    status:"SUCCESS",
+                    message:"User Successfully created",
+                    data:result
+                }))
+                
+            }
+        )
+        
+
+    },
+    question_fitb: async (req,res)=>{
+        let team
+        try{
+        team = await Team.findOne({name:req.team})
+        
+        }
+        catch(err){
+            return(res.status(400).json({
+                status: "FAILED",
+                message: err.message
+            }))
+        }
+        let question
+        if (team.fitb[req.query.page-1]){
+            try{
+                question = await FITB.findById(team.fitb[req.query.page-1].question)
+            }
+            catch(e){
+                return(res.status(400).json({
+                    status: "FAILED",
+                    message: "NaN"
+                }))
+            }
+        }else{
+            return(res.status(400).json({
+                status: "FAILED",
+                message: "NaN"
+            }))
+        }
+        const data ={
+            question:question.question
+        }
+        return(res.status(200).json({
+            status:"SUCCESS",
+            data:data
+        }))
 
     }
         

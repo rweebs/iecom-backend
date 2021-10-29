@@ -29,6 +29,8 @@ dotenv.config();
 const competitionRouter=require('./route/competition.route')
 const eventRouter=require('./route/events.route')
 const mcqRouter=require('./route/mcqs.route')
+const tfRouter=require('./route/tfs.route')
+const fitbRouter=require('./route/fitbs.route')
 app.use(cors({
     origin: ['http://localhost:3000','http://127.0.0.1:5500','https://bist-dev.herokuapp.com','https://bistleague.azurewebsites.net','https://bistleague.com','https://iecom-preview.vercel.app','https://iecom.asia','https://www.iecom.asia']
   }));
@@ -44,6 +46,8 @@ app.use(express.json()) // for parsing application/json
 app.use(express.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
 app.use(competitionRouter)
 app.use(mcqRouter)
+app.use(tfRouter)
+app.use(fitbRouter)
 app.use(eventRouter)
 app.use("/api/docs",swaggerUi.serve, swaggerUi.setup(swaggerDocs))
 require('./route/users.route')(app);
