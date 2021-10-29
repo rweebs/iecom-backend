@@ -1,4 +1,4 @@
-const { authJwt } = require("../middleware");
+const { authJwt, GetTeamName } = require("../middleware");
 const {uploadMediaTeam} = require('../pkg/image-upload')
 const controller = require("../controllers/teams.controller");
 
@@ -21,6 +21,88 @@ module.exports = function(app) {
   app.get(
     "/api/teams/activate",
     controller.activate
+  );
+  app.get(
+    "/api/teams/mcq/populate",
+    controller.populate
+  );
+  app.get(
+    "/api/teams/mcq/all",
+    [
+      authJwt.verifyToken,
+      GetTeamName.competitionTeam
+    ],
+    controller.getQuestion
+  );
+
+  app.post(
+    "/api/teams/mcq",
+    [
+      authJwt.verifyToken,
+      GetTeamName.competitionTeam
+    ],
+    controller.answer
+  );
+
+  app.get(
+    "/api/teams/mcq",
+    [
+      authJwt.verifyToken,
+      GetTeamName.competitionTeam
+    ],
+    controller.question
+  );
+  app.get(
+    "/api/teams/tf/all",
+    [
+      authJwt.verifyToken,
+      GetTeamName.competitionTeam
+    ],
+    controller.getQuestion_tf
+  );
+
+  app.post(
+    "/api/teams/tf",
+    [
+      authJwt.verifyToken,
+      GetTeamName.competitionTeam
+    ],
+    controller.answer_tf
+  );
+
+  app.get(
+    "/api/teams/tf",
+    [
+      authJwt.verifyToken,
+      GetTeamName.competitionTeam
+    ],
+    controller.question_tf
+  );
+  app.get(
+    "/api/teams/fitb/all",
+    [
+      authJwt.verifyToken,
+      GetTeamName.competitionTeam
+    ],
+    controller.getQuestion_fitb
+  );
+
+  app.post(
+    "/api/teams/fitb",
+    [
+      authJwt.verifyToken,
+      GetTeamName.competitionTeam
+    ],
+    controller.answer_fitb
+  );
+
+  app.get(
+    "/api/teams/fitb",
+    [
+      authJwt.verifyToken,
+      GetTeamName.competitionTeam
+    ],
+    controller.question_fitb
   );
 
 };

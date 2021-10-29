@@ -62,5 +62,23 @@ module.exports={
                 message: "Mau ngapain Hayo...."
             }))
         }
+    },
+    get: async (req,res)=>{
+        if(req.body.api_key==process.env.Pass){
+            const compe = await Competition.findOne({name:req.body.name})
+            console.log(compe)
+            console.log(compe._id.toString())
+            return(res.status(400).json({
+                status: "FAILED",
+                message: "Mau ngapain Hayo...."
+            }))
+        }
+        else{
+            return(res.status(400).json({
+                status: "FAILED",
+                message: "Mau ngapain Hayo...."
+            }))
+        }
+        
     }
 }

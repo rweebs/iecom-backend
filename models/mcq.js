@@ -23,10 +23,12 @@ const questionSchema = new Schema({
     answer:{
         type:String,
         required:true,
+        enum:['A','B','C','D','E']
     }
     
 },{timestamps:true});
 
-const Team = mongoose.model('Question',questionSchema)
+const MCQ = mongoose.model('MCQ',questionSchema)
+const MCQA = mongoose.model('MCQA',choiceSchema)
 
-module.exports= Team
+module.exports= {MCQ,MCQA}

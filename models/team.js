@@ -1,15 +1,35 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
+const {MCQ} = require('../models/mcq')
 
-const qaSchema = new Schema({
+const mcqSchema = new Schema({
     question:{
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Question"
+        ref: "MCQ"
       },
     answer:{
         type:String,
-        required:true,
         enum:['A','B','C','D','E'],
+    }
+})
+
+const tfSchema = new Schema({
+    question:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "TF"
+      },
+    answer:{
+        type:Boolean
+    }
+})
+
+const fitbSchema = new Schema({
+    question:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "FITB"
+      },
+    answer:{
+        type:Number
     }
 })
 
@@ -56,7 +76,9 @@ const teamSchema = new Schema({
         type :String,
         required: true
     },
-    qa:[qaSchema],
+    mcq:[mcqSchema],
+    tf:[tfSchema],
+    fitb:[fitbSchema],
     status:{
         type:String,
         enum:["Pending","Verified","Passed","Failed"],
@@ -82,9 +104,11 @@ const teamSchema = new Schema({
 },{timestamps:true});
 
 const Team = mongoose.model('Team',teamSchema)
-const QA = mongoose.model('Qa',qaSchema)
+const MCQA = mongoose.model('mcqa',mcqSchema)
+const TFA = mongoose.model('tfa',tfSchema)
+const FITBA = mongoose.model('fitba',fitbSchema)
 const Member = mongoose.model('Member',memberSchema)
 
 module.exports= {
-    Team,QA,Member
+    Team,MCQA,TFA,FITBA,Member
 }
