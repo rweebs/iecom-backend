@@ -353,9 +353,9 @@ module.exports ={
             }))
         }
         let question
-        if (team.tf[req.query.page-1]){
+        if (team.mcq[req.query.page-1]){
             try{
-                question = await MCQ.findById(team.tf[req.query.page-1].question)
+                question = await MCQ.findById(team.mcq[req.query.page-1].question)
             }
             catch(e){
                 return(res.status(400).json({
@@ -371,7 +371,7 @@ module.exports ={
         }
         const data ={
             question:question.question,
-            answer:question.answer
+            choices:question.choices
         }
         return(res.status(200).json({
             status:"SUCCESS",
