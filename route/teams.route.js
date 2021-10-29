@@ -1,4 +1,4 @@
-const { authJwt } = require("../middleware");
+const { authJwt, GetTeamName } = require("../middleware");
 const {uploadMediaTeam} = require('../pkg/image-upload')
 const controller = require("../controllers/teams.controller");
 
@@ -22,5 +22,27 @@ module.exports = function(app) {
     "/api/teams/activate",
     controller.activate
   );
+  app.get(
+    "/api/teams/populate",
+    controller.populate
+  );
+  app.get(
+    "/api/teams",
+    [
+      authJwt.verifyToken,
+      GetTeamName.competitionTeam
+    ],
+    controller.getQuestion
+  );
+
+  app.get(
+    "/api/teams/question",
+    [
+      authJwt.verifyToken,
+      GetTeamName.competitionTeam
+    ],
+    controller.answer
+  );
+  
 
 };

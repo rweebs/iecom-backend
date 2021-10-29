@@ -14,4 +14,5 @@ const router = express.Router()
  */
  router.route('/api/competition').post(competitionController.create)
  router.route('/api/competition').patch(competitionController.update)
+ router.route('/api/competition').put(competitionController.get)
 module.exports =router

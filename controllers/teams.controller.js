@@ -1,12 +1,14 @@
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
+const {MCQ} = require("../models/mcq")
 const {User,Teams} =require('../models/users')
-const {Team,Member} = require('../models/team');
+const {Team,Member,MCQA} = require('../models/team');
 const {pending,success} = require('../views/main-competition')
 const fs = require('fs');
 const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
 const Competition = require('../models/competition');
+const { MachineLearning } = require('aws-sdk');
 var mailgun = require('mailgun-js')({apiKey: process.env.API_KEY, domain: "iecom.id"});
 
 // get config vars
@@ -182,5 +184,125 @@ module.exports ={
                 }))
             }
     
+    },
+    populate:async(req,res)=>{
+        if(req.body.api_key==process.env.Pass){
+            const team= Team.findOne({name:req.body.name})
+            if(!team){
+                return(res.status(400).json({
+                    status: "FAILED",
+                    message: "Team not found"
+                }))
+            }
+            
+            const mcq= await MCQ.find({})
+            // Shuffle array
+            const shuffled = mcq.sort(() => 0.5 - Math.random());
+
+            // Get sub-array of first n elements after shuffled
+            let selected = shuffled.slice(0, 3);
+
+            let mcqa=[]
+
+            selected.forEach(element => {
+                const temp_mcq=new MCQA(
+                    {question: element}
+                )
+
+                mcqa.push(temp_mcq)
+                
+            })
+            let result
+            try{
+            result = await Team.findOneAndUpdate({name:req.body.name},{mcq:mcqa})
+            }
+
+            catch(e){
+                return(res.status(500).json({
+                    status: "FAILED",
+                    message: e.message
+                }))
+            }
+            return(res.status(200).json({
+                status: "SUCCESS",
+                data: result
+            }))
+            
+        }
+        else{
+            return(res.status(400).json({
+                status: "FAILED",
+                message: "Mau ngapain Hayo...."
+            }))
+        }
+    },
+    getQuestion: async (req,res)=>{
+        let team
+        try{
+        team = await Team.findOne({name:req.team})
+        
+        }
+        catch(err){
+            return(res.status(400).json({
+                status: "FAILED",
+                message: err.message
+            }))
+        }
+        let mcq =[]
+        for (const element of team.mcq) {
+            const temp = await MCQ.findById(element.question)
+            const {_id,question,choices}=temp
+            answer={_id,question,choices}
+            mcq.push(answer)
+        }
+        return(res.status(200).json({
+            status: "SUCCESS",
+            data:mcq
+        })) 
+
+    },
+    answer: async (req,res)=>{
+        let team
+        try{
+        team = await Team.findOne({name:req.team})
+        
+        }
+        catch(err){
+            return(res.status(400).json({
+                status: "FAILED",
+                message: err.message
+            }))
+        }
+        let find=false
+        for (const element of team.mcq) {
+            if(element.question.toString()===req.query.id){
+                element.answer=req.query.answer
+                find=true
+            }
+        }
+        if (!find){
+            return(res.status(400).json({
+                status: "FAILED",
+                message: "That Id doesn't belongs to you"
+            }))
+        }
+        await team.save((err,result)=>{
+            if(err){
+                return(res.status(400).json({
+                    status: "FAILED",
+                    message: err.message
+                }))
+            }
+            return(res.status(200).json({
+                    status:"SUCCESS",
+                    message:"User Successfully created",
+                    data:team
+                }))
+                
+            }
+        )
+        
+
     }
+        
 }

@@ -297,7 +297,7 @@ module.exports ={
         catch(e){
             return (res.status(404).json({
                 status: "FAILED",
-                message: err.message
+                message: e.message
             }))
         }
         return (res.status(200).json({
