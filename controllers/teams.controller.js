@@ -314,8 +314,8 @@ module.exports ={
                 message: err.message
             }))
         }
-        if (team.tf[req.query.page-1]){
-            team.tf[req.query.page-1].answer=req.query.answer
+        if (team.mcq[req.query.page-1]){
+            team.mcq[req.query.page-1].answer=req.query.answer
         }else{
             return(res.status(400).json({
                 status: "FAILED",
@@ -371,7 +371,8 @@ module.exports ={
         }
         const data ={
             question:question.question,
-            choices:question.choices
+            choices:question.choices,
+            answer:team.mcq[req.query.page-1].answer ||"NaN",
         }
         return(res.status(200).json({
             status:"SUCCESS",
@@ -472,7 +473,8 @@ module.exports ={
             }))
         }
         const data ={
-            question:question.question
+            question:question.question,
+            answer:(team.tf[req.query.page-1].answer==true||team.tf[req.query.page-1].answer==false)?team.tf[req.query.page-1].answer:"NaN",
         }
         return(res.status(200).json({
             status:"SUCCESS",
@@ -573,7 +575,8 @@ module.exports ={
             }))
         }
         const data ={
-            question:question.question
+            question:question.question,
+            answer:team.fitb[req.query.page-1].answer ||"NaN",
         }
         return(res.status(200).json({
             status:"SUCCESS",
