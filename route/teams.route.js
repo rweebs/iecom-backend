@@ -105,4 +105,13 @@ module.exports = function(app) {
     controller.question_fitb
   );
 
+  app.post(
+    "/api/teams/start",
+    [
+      authJwt.verifyToken,
+      GetTeamName.competitionTeam
+    ],
+    controller.start
+  );
+
 };
