@@ -314,8 +314,9 @@ module.exports ={
                 message: err.message
             }))
         }
-        if (team.tf[req.query.page-1]){
-            team.tf[req.query.page-1].answer=req.query.answer
+        if (team.mcq[req.query.page-1]){
+            team.mcq[req.query.page-1].answer=req.query.answer
+            team.mcq[req.query.page-1].isFlagged=req.query.isFlagged
         }else{
             return(res.status(400).json({
                 status: "FAILED",
@@ -371,7 +372,10 @@ module.exports ={
         }
         const data ={
             question:question.question,
-            choices:question.choices
+            choices:question.choices,
+            answer:team.mcq[req.query.page-1].answer ||"NaN",
+            isFlagged:team.mcq[req.query.page-1].isFlagged ||false,
+            time_taken:team.session_1
         }
         return(res.status(200).json({
             status:"SUCCESS",
@@ -418,6 +422,7 @@ module.exports ={
         }
         if (team.tf[req.query.page-1]){
             team.tf[req.query.page-1].answer=req.query.answer
+            team.tf[req.query.page-1].isFlagged=req.query.isFlagged
         }else{
             return(res.status(400).json({
                 status: "FAILED",
@@ -472,7 +477,10 @@ module.exports ={
             }))
         }
         const data ={
-            question:question.question
+            question:question.question,
+            answer:(team.tf[req.query.page-1].answer==true||team.tf[req.query.page-1].answer==false)?team.tf[req.query.page-1].answer:"NaN",
+            isFlagged:team.tf[req.query.page-1].isFlagged||false,
+            time_taken:team.session_1,
         }
         return(res.status(200).json({
             status:"SUCCESS",
@@ -519,6 +527,7 @@ module.exports ={
         }
         if (team.fitb[req.query.page-1]){
             team.fitb[req.query.page-1].answer=req.query.answer
+            team.fitb[req.query.page-1].isFlagged=req.query.isFlagged
         }else{
             return(res.status(400).json({
                 status: "FAILED",
@@ -573,12 +582,50 @@ module.exports ={
             }))
         }
         const data ={
-            question:question.question
+            question:question.question,
+            answer:team.fitb[req.query.page-1].answer ||"NaN",
+            isFlagged:team.fitb[req.query.page-1].isFlagged ||false,
+            time_taken:team.session_2,
         }
         return(res.status(200).json({
             status:"SUCCESS",
             data:data
         }))
+
+    },
+    start: async (req,res)=>{
+        let team
+        try{
+        team = await Team.findOne({name:req.team})
+        
+        }
+        catch(err){
+            return(res.status(400).json({
+                status: "FAILED",
+                message: err.message
+            }))
+        }
+        if(req.query.session==1){
+            team.session_1=Date.now()
+        }
+        if(req.query.session==2){
+            team.session_2=Date.now()
+        }
+        await team.save((err,result)=>{
+            if(err){
+                return(res.status(400).json({
+                    status: "FAILED",
+                    message: err.message
+                }))
+            }
+            return(res.status(200).json({
+                    status:"SUCCESS",
+                    message:"User Successfully created",
+                    data:result
+                }))
+                
+            }
+        )
 
     }
         

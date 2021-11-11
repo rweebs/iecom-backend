@@ -7,7 +7,6 @@ competitionTeam= async (req, res, next) => {
     competition.forEach(element => {
         if (element.competition.toString()==="615d0643de8d653575d6e3df"){
             req.team = element.team_name
-            console.log(element)
             next()
             
         }
