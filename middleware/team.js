@@ -61,6 +61,7 @@ competitionTeam= async (req, res, next) => {
         });
       }
       req.sheet_id=competition.sheet_id
+      req.current_year=competition.current_year
       next()
       
     

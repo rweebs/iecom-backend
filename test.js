@@ -57,21 +57,22 @@ const range = 'Pilihan investasi!I4';
 const range2='Current condition!B3:B26'
 const range3='Current condition!A3:A26'
 let year = new Map();
-  year.set(2022, 'Current condition!B3:B26');
-  year.set(2023, 'Current condition!C3:C26');
-  year.set(2024, 'Current condition!D3:D26');
-  year.set(2025, 'Current condition!E3:E26');
-  year.set(2026, 'Current condition!F3:F26');
-  year.set(2027, 'Current condition!G3:G26');
-  year.set(2028, 'Current condition!H3:H26');
-const sample2 = await read(sheets,year.get(2023),process.env.SHEET_ID)
+year.set('2022', 'Keuangan!B5:G5');
+year.set('2023', 'Keuangan!B6:G6');
+year.set('2024', 'Keuangan!B7:G7');
+year.set('2025', 'Keuangan!B8:G8');
+year.set('2026', 'Keuangan!B9:G9');
+year.set('2027', 'Keuangan!B10:G10');
+year.set('2028', 'Keuangan!B11:G11');
+const sample2 = await read(sheets,year.get('2022'),process.env.SHEET_ID)
 const sample3 = await read(sheets,range3,process.env.SHEET_ID)
-let result={}
-for(let i=0;i<sample2.length;i++){
-    result[sample3[i][0]]=sample2[i][0]
-}
+// let result={}
+// for(let i=0;i<sample2.length;i++){
+//     result[sample3[i][0]]=sample2[i][0]
+// }
 console.log(sample2)
-console.log(sample3)
-console.log(result)}
+// console.log(sample3)
+// console.log(result)
+}
 
 test()

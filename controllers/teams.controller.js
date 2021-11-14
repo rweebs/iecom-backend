@@ -590,6 +590,27 @@ module.exports ={
         }))
 
     },
+    status: async (req,res)=>{
+        let team
+        try{
+            team = await Team.findOne({name:req.team})
+        }
+        catch(err){
+            return(res.status(400).json({
+                status: "FAILED",
+                message: err.message
+            }))
+        }
+        const result = {
+            session_1:team.session_1,
+            session_2:team.session_2,
+            is_submited:team.is_submited,
+        }
+        return(res.status(200).json({
+            status:"SUCCESS",
+            data:result
+        }))
+    },
     start: async (req,res)=>{
         let team
         try{

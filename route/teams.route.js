@@ -160,7 +160,14 @@ module.exports = function(app) {
     ],
     controller.start
   );
-
+  app.get(
+    "/api/teams/status",
+    [
+      authJwt.verifyToken,
+      GetTeamName.competitionTeam
+    ],
+    controller.status
+  );
   app.post(
     "/api/simulation/edit",
     [
@@ -172,13 +179,43 @@ module.exports = function(app) {
   );
 
   app.get(
-    "/api/simulation/current",
+    "/api/simulation/current_condition",
     [
       authJwt.verifyToken,
       GetTeamName.competitionSimulation,
       GetTeamName.competitionSimulation2
     ],
     simulation.current_condition
+  );
+
+  app.get(
+    "/api/simulation/current_data",
+    [
+      authJwt.verifyToken,
+      GetTeamName.competitionSimulation,
+      GetTeamName.competitionSimulation2
+    ],
+    simulation.current_data
+  );
+
+  app.post(
+    "/api/simulation/submit_current_year",
+    [
+      authJwt.verifyToken,
+      GetTeamName.competitionSimulation,
+      GetTeamName.competitionSimulation2
+    ],
+    simulation.submit_current_year
+  );
+
+  app.post(
+    "/api/simulation/submit_final",
+    [
+      authJwt.verifyToken,
+      GetTeamName.competitionSimulation,
+      GetTeamName.competitionSimulation2
+    ],
+    simulation.submit_final
   );
 
 

@@ -129,6 +129,13 @@ const teamSchema = new Schema({
     },
     sheet_id:{
         type:String
+    },
+    final_cash:{
+        type:Schema.Types.Decimal128
+    },
+    current_year:{
+        type:String,
+        default:'2022'
     }
 },{timestamps:true});
 

@@ -1,6 +1,7 @@
 const { google } = require("googleapis");
 const dotenv = require("dotenv");
 const { Investasi } = require("./map");
+const {Team} = require("../models/team");
 dotenv.config();
 async function read(sheets, range, spreadsheetId) {
   const response = await sheets.spreadsheets.values.get({
@@ -38,13 +39,15 @@ async function isValid(sheets, spreadsheetId, cell) {
   year.set('2027', 8);
   year.set('2028', 9);
   const row = year.get(cell.substr(cell.length - 4));
+  console.log(row)
   let max_money;
   let current_invest;
   let money;
+  
   try {
     max_money = await read(sheets, `Pilihan investasi!S${row}`, spreadsheetId);
   } catch (err) {
-    return false;
+    console.log(err.message);
   }
   try {
     current_money = await read(
@@ -53,14 +56,14 @@ async function isValid(sheets, spreadsheetId, cell) {
       spreadsheetId
     );
   } catch (err) {
-    return false;
+    console.log(err.message);
   }
   try {
-    const temp = cell.replace("Pilihan investasi!", "");
+    const temp = Investasi.get(cell).replace("Pilihan investasi!", "");
     const temp2 = temp.substring(1, temp.length);
     money = await read(sheets, `Pilihan investasi!G${temp2}`, spreadsheetId);
   } catch (err) {
-    return false;
+    console.log(err.message);
   }
   if (max_money <= current_invest + money) {
     console.log("max_money", max_money);
@@ -68,7 +71,7 @@ async function isValid(sheets, spreadsheetId, cell) {
     console.log("money", money);
     return true;
   } else {
-    return false;
+    console.log(err.message);
   }
 }
 async function financialStatus(sheets, spreadsheetId, cell) {
@@ -147,7 +150,7 @@ module.exports = {
           `Pilihan investasi!P5`,
           spreadsheetId
         );
-        if (isChecked === 1) {
+        if (isChecked == 1) {
           return res.status(400).json({
             status: "FAILED",
             message:
@@ -182,7 +185,7 @@ module.exports = {
           `Pilihan investasi!P15`,
           spreadsheetId
         );
-        if (isChecked === 1) {
+        if (isChecked == 1) {
           return res.status(400).json({
             status: "FAILED",
             message: "You can only choose 'Build a new warehouse' once",
@@ -216,7 +219,7 @@ module.exports = {
           `Pilihan investasi!P16`,
           spreadsheetId
         );
-        if (isChecked === 1) {
+        if (isChecked == 1) {
           return res.status(400).json({
             status: "FAILED",
             message: "You can only choose 'Expand current warehouse' once",
@@ -250,7 +253,7 @@ module.exports = {
           `Pilihan investasi!P26`,
           spreadsheetId
         );
-        if (isChecked === 1) {
+        if (isChecked == 1) {
           return res.status(400).json({
             status: "FAILED",
             message:
@@ -285,7 +288,7 @@ module.exports = {
           `Pilihan investasi!P33`,
           spreadsheetId
         );
-        if (isChecked === 1) {
+        if (isChecked == 1) {
           return res.status(400).json({
             status: "FAILED",
             message:
@@ -356,9 +359,8 @@ module.exports = {
   year.set('2026', 'Current condition!F3:F26');
   year.set('2027', 'Current condition!G3:G26');
   year.set('2028', 'Current condition!H3:H26');
-    const range3 = 'Current condition!A3:A26'
-    console.log(req.query.year)
-    const sample2 = await read_multiple(sheets, year.get(req.query.year), spreadsheetId)
+    const range3 = 'Current condition!A3:A26';
+    const sample2 = await read_multiple(sheets, year.get(req.current_year), spreadsheetId)
     const sample3 = await read_multiple(sheets, range3, spreadsheetId)
     let result = {}
     for (let i = 0; i < sample2.length; i++) {
@@ -368,5 +370,116 @@ module.exports = {
       status: "SUCCESS",
       data: result,
     });
+  },
+  submit_current_year: async (req, res) => {
+    const auth = await google.auth.getClient({
+      scopes: ["https://www.googleapis.com/auth/spreadsheets"],
+    });
+    
+    const sheets = google.sheets({ version: "v4", auth });
+    const spreadsheetId = req.sheet_id;
+    let year = new Map();
+    year.set('2022', 'Keuangan!B5:G5');
+    year.set('2023', 'Keuangan!B6:G6');
+    year.set('2024', 'Keuangan!B7:G7');
+    year.set('2025', 'Keuangan!B8:G8');
+    year.set('2026', 'Keuangan!B9:G9');
+    year.set('2027', 'Keuangan!B10:G10');
+    year.set('2028', 'Keuangan!B11:G11');
+  const data = await read_multiple(sheets, year.get(req.current_year), spreadsheetId);
+  const team = await Team.findOne({name: req.team});
+  team.current_year = (req.current_year + 1).toString();
+  const result={
+    "Product Sold": data[0][4],
+    "Market Share Change": data[0][5],
+    "Early Year Cash": data[0][0],
+    "Total Cost": data[0][1],
+    "Profit": data[0][2],
+    "Cash": data[0][3],
   }
+  let save = await team.save();
+  return res.status(200).json({
+    status: "SUCCESS",
+    data: result,
+  });
+  },
+  current_data: async (req, res) => {
+    const auth = await google.auth.getClient({
+      scopes: ["https://www.googleapis.com/auth/spreadsheets"],
+    });
+    const sheets = google.sheets({ version: "v4", auth });
+    const spreadsheetId = req.sheet_id;
+    let year = req.current_year;
+    let result;
+    if (year==='2022'){
+      result = await read(sheets, 'Pengumuman!B2', spreadsheetId);
+    }else if (year==='2023'){
+      result = await read(sheets, 'Pengumuman!B3', spreadsheetId);
+    }else if (year==='2024'){
+      result = await read(sheets, 'Pengumuman!B4', spreadsheetId);
+    }else if (year==='2025'){
+      const isValid=await read(sheets, 'Pilihan Investasi!P33', spreadsheetId);
+      if (isValid=='1'){
+        result = await read(sheets, 'Pengumuman!B5', spreadsheetId);
+      }else{
+        result = await read(sheets, 'Pengumuman!C5', spreadsheetId);
+      }
+    }else if (year==='2026'){
+      const isValid=await read(sheets, 'Pilihan Investasi!Q29', spreadsheetId);
+      if (isValid>0){
+        result = await read(sheets, 'Pengumuman!B6', spreadsheetId);
+      }else{
+        result = await read(sheets, 'Pengumuman!C6', spreadsheetId);
+      }
+    }else if (year==='2027'){
+      const isValid=await read(sheets, 'Pilihan Investasi!P33', spreadsheetId);
+      if (isValid=='1'){
+        result = await read(sheets, 'Pengumuman!B7', spreadsheetId);
+      }else{
+        result = await read(sheets, 'Pengumuman!C7', spreadsheetId);
+      }
+    }else if (year==='2028'){
+      const isValid=await read(sheets, 'Pilihan Investasi!R29', spreadsheetId);
+      if (isValid>0){
+        result = await read(sheets, 'Pengumuman!B8', spreadsheetId);
+      }else{
+        result = await read(sheets, 'Pengumuman!C8', spreadsheetId);
+      }
+    }
+    else{
+      result=null;
+    }
+  const finance = await financialStatus(sheets, spreadsheetId, req.current_year);
+  return res.status(200).json({
+    status: "SUCCESS",
+    data: {financial_status:finance, announcement:result, period:req.current_year},
+  });
+  },
+  submit_final: async (req, res) => {
+    const auth = await google.auth.getClient({
+      scopes: ["https://www.googleapis.com/auth/spreadsheets"],
+    });
+    const sheets = google.sheets({ version: "v4", auth });
+    const spreadsheetId = req.sheet_id;
+    let team = await Team.findOne({name:req.team})
+    const final_cash = await read(sheets, 'Keuangan!B12', spreadsheetId);
+    team.final_cash = final_cash
+    team.is_submited_2 = true
+    await team.save((err,result)=>{
+      if(err){
+          return(res.status(400).json({
+              status: "FAILED",
+              message: err.message
+          }))
+      }
+      return(res.status(200).json({
+              status:"SUCCESS",
+              data:final_cash
+          }))
+          
+      }
+  )
+  }
+  
+
 };
