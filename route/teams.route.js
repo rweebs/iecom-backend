@@ -123,7 +123,7 @@ module.exports = function(app) {
     controller.submit
   );
 
-  app.post(
+  app.get(
     "/api/teams/session_1",
     [
       authJwt.verifyToken,
@@ -132,7 +132,7 @@ module.exports = function(app) {
     controller.get_status_session_1
   );
 
-  app.post(
+  app.get(
     "/api/teams/session_2",
     [
       authJwt.verifyToken,

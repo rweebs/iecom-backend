@@ -646,9 +646,9 @@ module.exports ={
                 isFlagged:element.isFlagged,
                 isAnswered:element.answer?true:false,
             }
-            result.push(answer)
+            result.push(temp)
         }
-        let number=0
+        number=0
         for (const element of team.tf) {
             number++
             let temp={
@@ -657,7 +657,7 @@ module.exports ={
                 isFlagged:element.isFlagged,
                 isAnswered:element.answer?true:false,
             }
-            result.push(answer)
+            result.push(temp)
         }
         return(res.status(200).json({
             status: "SUCCESS",
@@ -686,7 +686,7 @@ module.exports ={
                 isFlagged:element.isFlagged,
                 isAnswered:element.answer?true:false,
             }
-            result.push(answer)
+            result.push(temp)
         }
         return(res.status(200).json({
             status: "SUCCESS",
