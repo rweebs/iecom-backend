@@ -1,6 +1,8 @@
 const { authJwt, GetTeamName } = require("../middleware");
 const {uploadMediaTeam} = require('../pkg/image-upload')
 const controller = require("../controllers/teams.controller");
+const simulation = require("../controllers/simulation.controller");
+
 
 module.exports = function(app) {
   app.use(function(req, res, next) {
@@ -157,6 +159,26 @@ module.exports = function(app) {
       GetTeamName.competitionTeam
     ],
     controller.start
+  );
+
+  app.post(
+    "/api/simulation/edit",
+    [
+      authJwt.verifyToken,
+      GetTeamName.competitionSimulation,
+      GetTeamName.competitionSimulation2
+    ],
+    simulation.edit
+  );
+
+  app.get(
+    "/api/simulation/current",
+    [
+      authJwt.verifyToken,
+      GetTeamName.competitionSimulation,
+      GetTeamName.competitionSimulation2
+    ],
+    simulation.current_condition
   );
 
 

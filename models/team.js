@@ -122,6 +122,13 @@ const teamSchema = new Schema({
     is_submited:{
         type:Boolean,
         default:false
+    },
+    is_submited_2:{
+        type:Boolean,
+        default:false
+    },
+    sheet_id:{
+        type:String
     }
 },{timestamps:true});
 
