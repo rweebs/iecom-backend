@@ -160,7 +160,14 @@ module.exports = function(app) {
     ],
     controller.start
   );
-
+  app.get(
+    "/api/teams/status",
+    [
+      authJwt.verifyToken,
+      GetTeamName.competitionTeam
+    ],
+    controller.status
+  );
   app.post(
     "/api/simulation/edit",
     [
