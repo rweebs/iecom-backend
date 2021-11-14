@@ -105,4 +105,59 @@ module.exports = function(app) {
     controller.question_fitb
   );
 
+  app.post(
+    "/api/teams/start",
+    [
+      authJwt.verifyToken,
+      GetTeamName.competitionTeam
+    ],
+    controller.start
+  );
+
+  app.post(
+    "/api/teams/submit",
+    [
+      authJwt.verifyToken,
+      GetTeamName.competitionTeam
+    ],
+    controller.submit
+  );
+
+  app.get(
+    "/api/teams/session_1",
+    [
+      authJwt.verifyToken,
+      GetTeamName.competitionTeam
+    ],
+    controller.get_status_session_1
+  );
+
+  app.get(
+    "/api/teams/session_2",
+    [
+      authJwt.verifyToken,
+      GetTeamName.competitionTeam
+    ],
+    controller.get_status_session_2
+  );
+
+  app.post(
+    "/api/teams/submit",
+    [
+      authJwt.verifyToken,
+      GetTeamName.competitionTeam
+    ],
+    controller.submit
+  );
+
+  app.post(
+    "/api/teams/start",
+    [
+      authJwt.verifyToken,
+      GetTeamName.competitionTeam
+    ],
+    controller.start
+  );
+
+
 };

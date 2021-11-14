@@ -10,7 +10,11 @@ const mcqSchema = new Schema({
     answer:{
         type:String,
         enum:['A','B','C','D','E'],
-    }
+    },
+    isFlagged:{
+        type:Boolean,
+        default:false
+    },
 })
 
 const tfSchema = new Schema({
@@ -20,7 +24,11 @@ const tfSchema = new Schema({
       },
     answer:{
         type:Boolean
-    }
+    },
+    isFlagged:{
+        type:Boolean,
+        default:false
+    },
 })
 
 const fitbSchema = new Schema({
@@ -30,7 +38,11 @@ const fitbSchema = new Schema({
       },
     answer:{
         type:Number
-    }
+    },
+    isFlagged:{
+        type:Boolean,
+        default:false
+    },
 })
 
 const memberSchema = new Schema({
@@ -100,6 +112,16 @@ const teamSchema = new Schema({
     },
     score:{
         type: Number
+    },
+    session_1:{
+        type:Date,
+    },
+    session_2:{
+        type:Date,
+    },
+    is_submited:{
+        type:Boolean,
+        default:false
     }
 },{timestamps:true});
 
