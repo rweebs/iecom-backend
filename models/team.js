@@ -118,6 +118,10 @@ const teamSchema = new Schema({
     },
     session_2:{
         type:Date,
+    },
+    is_submited:{
+        type:Boolean,
+        default:false
     }
 },{timestamps:true});
 

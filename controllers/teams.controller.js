@@ -91,9 +91,6 @@ module.exports ={
             referral:req.body.referral,
             status:"Pending",
         })
-
-        
-        
         await team.save((err,result)=>{
                 if(err){
                     return(res.status(400).json({
@@ -627,6 +624,121 @@ module.exports ={
             }
         )
 
-    }
+    },
+    get_status_session_1: async (req,res)=>{
+        let team
+        try{
+        team = await Team.findOne({name:req.team})
+        }
+        catch(err){
+            return(res.status(400).json({
+                status: "FAILED",
+                message: err.message
+            }))
+        }
+        let result =[]
+        let number=0
+        for (const element of team.mcq) {
+            number++
+            let temp={
+                type:"mcq",
+                number:number,
+                isFlagged:element.isFlagged,
+                isAnswered:element.answer?true:false,
+            }
+            result.push(answer)
+        }
+        let number=0
+        for (const element of team.tf) {
+            number++
+            let temp={
+                type:"tf",
+                number:number,
+                isFlagged:element.isFlagged,
+                isAnswered:element.answer?true:false,
+            }
+            result.push(answer)
+        }
+        return(res.status(200).json({
+            status: "SUCCESS",
+            data:result
+        })) 
+
+    },
+    get_status_session_2: async (req,res)=>{
+        let team
+        try{
+        team = await Team.findOne({name:req.team})
+        }
+        catch(err){
+            return(res.status(400).json({
+                status: "FAILED",
+                message: err.message
+            }))
+        }
+        let result =[]
+        let number=0
+        for (const element of team.fitb) {
+            number++
+            let temp={
+                type:"fitb",
+                number:number,
+                isFlagged:element.isFlagged,
+                isAnswered:element.answer?true:false,
+            }
+            result.push(answer)
+        }
+        return(res.status(200).json({
+            status: "SUCCESS",
+            data:result
+        })) 
+
+    },
+    submit: async (req,res)=>{
+        let team
+        try{
+        team = await Team.findOne({name:req.team})
+        }
+        catch(err){
+            return(res.status(400).json({
+                status: "FAILED",
+                message: err.message
+            }))
+        }
+        let score = 0
+        for (const element of team.mcq) {
+            let question = await MCQ.findById(element.question)
+            if(element.answer==question.answer){
+                score+=2
+            }
+        }
+        for (const element of team.tf) {
+            let question = await TF.findById(element.question)
+            if(element.answer==question.answer){
+                score+=1
+            }
+        }
+        for (const element of team.fitb) {
+            let question = await FITB.findById(element.question)
+            if(element.answer==question.answer){
+                score+=4
+            }
+        }
+        team.score=score
+        team.is_submited=true
+        await team.save((err,result)=>{
+            if(err){
+                return(res.status(400).json({
+                    status: "FAILED",
+                    message: err.message
+                }))
+            }
+        return(res.status(200).json({
+            status: "SUCCESS",
+            data:result
+        })) 
+
+    })
+}
         
 }

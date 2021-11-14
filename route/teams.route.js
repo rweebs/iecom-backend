@@ -114,4 +114,50 @@ module.exports = function(app) {
     controller.start
   );
 
+  app.post(
+    "/api/teams/submit",
+    [
+      authJwt.verifyToken,
+      GetTeamName.competitionTeam
+    ],
+    controller.submit
+  );
+
+  app.post(
+    "/api/teams/session_1",
+    [
+      authJwt.verifyToken,
+      GetTeamName.competitionTeam
+    ],
+    controller.get_status_session_1
+  );
+
+  app.post(
+    "/api/teams/session_2",
+    [
+      authJwt.verifyToken,
+      GetTeamName.competitionTeam
+    ],
+    controller.get_status_session_2
+  );
+
+  app.post(
+    "/api/teams/submit",
+    [
+      authJwt.verifyToken,
+      GetTeamName.competitionTeam
+    ],
+    controller.submit
+  );
+
+  app.post(
+    "/api/teams/start",
+    [
+      authJwt.verifyToken,
+      GetTeamName.competitionTeam
+    ],
+    controller.start
+  );
+
+
 };

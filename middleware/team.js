@@ -6,9 +6,15 @@ competitionTeam= async (req, res, next) => {
     const competition = user.competition
     competition.forEach(element => {
         if (element.competition.toString()==="615d0643de8d653575d6e3df"){
-            req.team = element.team_name
-            next()
-            
+            let team = element.team_name
+            if(element.isSubmitted){
+              return res.status(401).send({
+                message: "Unauthorized!"
+              });
+            }else{
+              req.team = team
+              next()
+            }
         }
     })
     if(!req.team){
