@@ -16,6 +16,12 @@ competitionTeam= async (req, res, next) => {
                     message: "Unauthorized!"
                   });
               }
+              const date= new Date()
+              if(date.getTime()-competition.session_2.getTime()>1800000){
+                return res.status(401).send({
+                    message: "Unauthorized!"
+                  });
+              }
             }catch(err){
               // return res.status(401).send({
               //   message: "Unauthorized!"
@@ -45,6 +51,11 @@ competitionTeam1= async (req, res, next) => {
             try{
               let competition= await Team.findOne({name:team})
               if(competition.session_2){
+                return res.status(401).send({
+                    message: "Unauthorized!"
+                  });
+              }
+              if(date.getTime()-competition.session_1.getTime()>3600000){
                 return res.status(401).send({
                     message: "Unauthorized!"
                   });

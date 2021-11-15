@@ -627,10 +627,16 @@ module.exports ={
             }))
         }
         if(req.query.session==1){
-            team.session_1=Date.now()
+            // if(!team.session_1){
+                team.session_1=Date.now()
+            // }
+            
         }
         if(req.query.session==2){
-            team.session_2=Date.now()
+            // if(!team.session_2){
+                team.session_2=Date.now()
+            // }
+            
         }
         await team.save((err,result)=>{
             if(err){
