@@ -202,7 +202,7 @@ module.exports ={
             const shuffled = mcq.sort(() => 0.5 - Math.random());
 
             // Get sub-array of first n elements after shuffled
-            let selected = shuffled.slice(0, 3);
+            let selected = shuffled.slice(0, 20);
 
             
 
@@ -221,7 +221,7 @@ module.exports ={
             const shuffled_tf = tf.sort(() => 0.5 - Math.random());
 
             // Get sub-array of first n elements after shuffled
-            let selected_tf = shuffled_tf.slice(0, 3);
+            let selected_tf = shuffled_tf.slice(0, 20);
 
             
 
@@ -238,7 +238,7 @@ module.exports ={
             const shuffled_fitb = fitb.sort(() => 0.5 - Math.random());
 
             // Get sub-array of first n elements after shuffled
-            let selected_fitb = shuffled_fitb.slice(0, 3);
+            let selected_fitb = shuffled_fitb.slice(0, 10);
 
             
 
