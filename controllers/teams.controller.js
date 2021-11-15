@@ -370,6 +370,7 @@ module.exports ={
         const data ={
             question:question.question,
             choices:question.choices,
+            image: question.image,
             answer:team.mcq[req.query.page-1].answer ||"NaN",
             isFlagged:team.mcq[req.query.page-1].isFlagged ||false,
             time_taken:team.session_1
@@ -475,6 +476,7 @@ module.exports ={
         }
         const data ={
             question:question.question,
+            image: question.image,
             answer:(team.tf[req.query.page-1].answer==true||team.tf[req.query.page-1].answer==false)?team.tf[req.query.page-1].answer:"NaN",
             isFlagged:team.tf[req.query.page-1].isFlagged||false,
             time_taken:team.session_1,
@@ -580,6 +582,7 @@ module.exports ={
         }
         const data ={
             question:question.question,
+            image: question.image,
             answer:team.fitb[req.query.page-1].answer ||"NaN",
             isFlagged:team.fitb[req.query.page-1].isFlagged ||false,
             time_taken:team.session_2,
@@ -760,6 +763,53 @@ module.exports ={
         })) 
 
     })
-}
-        
+},
+scoreboard_prelim: async (req,res)=>{
+    let team
+    try{
+        team = await Team.find({is_submited:true}).sort({score:-1})
+    }
+    catch(err){
+        return(res.status(400).json({
+            status: "FAILED",
+            message: err.message
+        }))
+    }
+    let result =[]
+    for (const element of team) {
+        let temp={
+            name:element.name,
+            score:element.score,
+        }
+        result.push(temp)
+    }
+    return(res.status(200).json({
+        status: "SUCCESS",
+        data:result
+    })) 
+},
+scoreboard_simulation: async (req,res)=>{
+    let team
+    try{
+        team = await Team.find({is_submited_2:true}).sort({final_cash:-1})
+    }
+    catch(err){
+        return(res.status(400).json({
+            status: "FAILED",
+            message: err.message
+        }))
+    }
+    let result =[]
+    for (const element of team) {
+        let temp={
+            name:element.name,
+            final_cash:element.final_cash,
+        }
+        result.push(temp)
+    }
+    return(res.status(200).json({
+        status: "SUCCESS",
+        data:result
+    })) 
+},        
 }
