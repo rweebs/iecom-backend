@@ -50,7 +50,7 @@ module.exports = function(app) {
     "/api/teams/mcq",
     [
       authJwt.verifyToken,
-      GetTeamName.competitionTeam
+      GetTeamName.competitionTeam1
     ],
     controller.question
   );
@@ -58,7 +58,7 @@ module.exports = function(app) {
     "/api/teams/tf/all",
     [
       authJwt.verifyToken,
-      GetTeamName.competitionTeam
+      GetTeamName.competitionTeam1
     ],
     controller.getQuestion_tf
   );
@@ -67,7 +67,7 @@ module.exports = function(app) {
     "/api/teams/tf",
     [
       authJwt.verifyToken,
-      GetTeamName.competitionTeam
+      GetTeamName.competitionTeam1
     ],
     controller.answer_tf
   );
@@ -76,7 +76,7 @@ module.exports = function(app) {
     "/api/teams/tf",
     [
       authJwt.verifyToken,
-      GetTeamName.competitionTeam
+      GetTeamName.competitionTeam1
     ],
     controller.question_tf
   );
