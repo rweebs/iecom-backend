@@ -9,7 +9,6 @@ const tfSchema = new Schema({
     },
     image:{
         type :String,
-        required: true,
     },
     answer:{
         type:Boolean,

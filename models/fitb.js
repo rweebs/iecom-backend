@@ -9,7 +9,6 @@ const fitbSchema = new Schema({
     },
     image:{
         type :String,
-        required: true,
     },
     answer:{
         type:Number,
