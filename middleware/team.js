@@ -55,6 +55,7 @@ competitionTeam1= async (req, res, next) => {
                     message: "Unauthorized!"
                   });
               }
+              const date= new Date()
               if(date.getTime()-competition.session_1.getTime()>3600000){
                 return res.status(401).send({
                     message: "Unauthorized!"
