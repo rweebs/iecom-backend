@@ -7,6 +7,7 @@ const swaggerJsDoc = require('swagger-jsdoc')
 const swaggerUi = require('swagger-ui-express')
 const { uploadMedia, uploadSingleFIle } = require('./pkg/image-upload');
 const dotenv = require('dotenv');
+const {Team}=require('./models/team');
 const swaggerOptions ={
   swaggerDefinition:{
     openapi: '3.0.0',
@@ -58,7 +59,14 @@ app.post("/api/uploads",uploadSingleFIle)
 const path = require('path');
 
 const fs = require('fs');
-
+// const test = async () =>{
+//   const team = await Team.findOne({name:"tester-final-3"})
+//   const date= new Date()
+//   console.log(date.getTime())
+//   console.log(team.session_1.getTime())
+//   console.log(date.getTime()-team.session_1.getTime())
+// }
+// test()
 
 app.listen(process.env.PORT || 5000,function(){
     console.log(`listening to port${process.env.PORT || 5000}`)
