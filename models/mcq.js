@@ -22,7 +22,6 @@ const questionSchema = new Schema({
     choices:[choiceSchema],
     image:{
         type :String,
-        required: true,
     },
     answer:{
         type:String,

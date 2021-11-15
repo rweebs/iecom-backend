@@ -6,7 +6,8 @@ module.exports={
         if(req.body.api_key==process.env.Pass){
             const tf = new TF({
                 question:req.body.question,
-                answer:req.body.answer
+                answer:req.body.answer,
+                image:req.body.image
             })
             await tf.save((err,result)=>{
                 if(err){

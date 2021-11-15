@@ -16,7 +16,8 @@ module.exports={
             const mcq = new MCQ({
                 question:req.body.question,
                 choices:choices,
-                answer:req.body.answer
+                answer:req.body.answer,
+                image:req.body.image
             })
             await mcq.save((err,result)=>{
                 if(err){
