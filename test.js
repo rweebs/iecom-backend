@@ -1,7 +1,7 @@
 const {google} = require('googleapis');
 const dotenv = require('dotenv');
 dotenv.config();
-
+//
 marketing_1_2021    = 'Pilihan investasi!I4'
 marketing_2_2021    = 'Pilihan investasi!I5'
 marketing_3_2021    = 'Pilihan investasi!I6'
