@@ -20,6 +20,10 @@ const questionSchema = new Schema({
         unique:true
     },
     choices:[choiceSchema],
+    image:{
+        type :String,
+        required: true,
+    },
     answer:{
         type:String,
         required:true,

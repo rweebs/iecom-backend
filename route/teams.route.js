@@ -168,6 +168,20 @@ module.exports = function(app) {
     ],
     controller.status
   );
+  app.get(
+    "/api/teams/scoreboard",
+    [
+      authJwt.verifyToken,
+    ],
+    controller.scoreboard_prelim
+  );
+  app.get(
+    "/api/simulation/scoreboard",
+    [
+      authJwt.verifyToken,
+    ],
+    controller.scoreboard_simulation
+  );
   app.post(
     "/api/simulation/edit",
     [
