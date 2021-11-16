@@ -164,7 +164,7 @@ module.exports = function(app) {
     "/api/teams/status",
     [
       authJwt.verifyToken,
-      GetTeamName.competitionTeam
+      GetTeamName.competitionTeam2
     ],
     controller.status
   );
