@@ -629,6 +629,7 @@ module.exports ={
         if(req.query.session==1){
             // if(!team.session_1){
                 team.session_1=Date.now()
+                team.session_2=Date.now()+1000*60*60
             // }
             
         }
