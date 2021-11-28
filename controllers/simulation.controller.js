@@ -388,7 +388,7 @@ module.exports = {
     year.set('2028', 'Keuangan!B11:G11');
   const data = await read_multiple(sheets, year.get(req.current_year), spreadsheetId);
   const team = await Team.findOne({name: req.team});
-  team.current_year = (req.current_year + 1).toString();
+  team.current_year = (parseInt(req.current_year) + 1).toString();
   const result={
     "Product Sold": data[0][4],
     "Market Share Change": data[0][5],
