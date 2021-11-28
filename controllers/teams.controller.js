@@ -604,10 +604,14 @@ module.exports ={
                 message: err.message
             }))
         }
+        const date= Date.now()
+        const isStartedSession2=date > team.session_2?true:false
+
         const result = {
             session_1:team.session_1,
             session_2:team.session_2,
             is_submited:team.is_submited,
+            isStartedSession2:isStartedSession2,
         }
         return(res.status(200).json({
             status:"SUCCESS",
