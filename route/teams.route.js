@@ -232,5 +232,14 @@ module.exports = function(app) {
     simulation.submit_final
   );
 
+  app.get(
+    "/api/simulation/status",
+    [
+      authJwt.verifyToken,
+      GetTeamName.competitionSimulation,
+      GetTeamName.competitionSimulation2
+    ],
+    simulation.status
+  );
 
 };
