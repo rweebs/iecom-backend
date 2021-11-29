@@ -41,7 +41,7 @@ module.exports = function(app) {
     "/api/teams/mcq",
     [
       authJwt.verifyToken,
-      GetTeamName.competitionTeam
+      GetTeamName.competitionTeam1
     ],
     controller.answer
   );
