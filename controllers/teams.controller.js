@@ -605,13 +605,15 @@ module.exports ={
             }))
         }
         const date= Date.now()
-        const isStartedSession2=date > team.session_2?true:false
-
+        if(!team.isStartedSession2){
+        team.isStartedSession2=date > team.session_2?true:false
+        await team.save()
+        }
         const result = {
             session_1:team.session_1,
             session_2:team.session_2,
             is_submited:team.is_submited,
-            isStartedSession2:isStartedSession2,
+            isStartedSession2:team.isStartedSession2,
         }
         return(res.status(200).json({
             status:"SUCCESS",
@@ -640,6 +642,7 @@ module.exports ={
         if(req.query.session==2){
             // if(!team.session_2){
                 team.session_2=Date.now()
+                team.isStartedSession2=true
             // }
             
         }

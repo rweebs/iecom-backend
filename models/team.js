@@ -139,6 +139,10 @@ const teamSchema = new Schema({
     },
     session_3:{
         type:Date,
+    },
+    isStartedSession2:{
+        type:Boolean,
+        default:false
     }
 },{timestamps:true});
 
