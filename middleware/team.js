@@ -12,13 +12,15 @@ competitionTeam= async (req, res, next) => {
             try{
               let competition= await Team.findOne({name:team})
               if(competition.is_submited==true){
-                return res.status(401).send({
+                return res.status(403).send({
                     message: "Unauthorized!"
                   });
               }
               const date= new Date()
               if(date.getTime()-competition.session_2.getTime()>1800000){
-                return res.status(401).send({
+                competition.is_submited=true
+                await competition.save();
+                return res.status(403).send({
                     message: "Unauthorized!"
                   });
               }
