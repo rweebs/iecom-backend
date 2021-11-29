@@ -50,7 +50,7 @@ competitionTeam1= async (req, res, next) => {
             team = element.team_name
             try{
               let competition= await Team.findOne({name:team})
-              if(competition.session_2){
+              if(competition.isStartedSession2){
                 return res.status(401).send({
                     message: "Unauthorized!"
                   });
