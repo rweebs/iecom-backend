@@ -136,6 +136,9 @@ const teamSchema = new Schema({
     current_year:{
         type:String,
         default:'2022'
+    },
+    session_3:{
+        type:Date,
     }
 },{timestamps:true});
 

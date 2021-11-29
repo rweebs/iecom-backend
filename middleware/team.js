@@ -133,8 +133,22 @@ competitionTeam1= async (req, res, next) => {
           message: "Unauthorized!"
         });
       }
+      const date= new Date()
+      if(!competition.session_3){
+        competition.session_3 = new Date();
+        await competition.save();
+      }else{
+        if(date.getTime()-competition.session_3.getTime()>3600000){
+          return res.status(401).send({
+              message: "Unauthorized!"
+            });
+        }
+      }
+      
+      
       req.sheet_id=competition.sheet_id
       req.current_year=competition.current_year
+      req.session_3=competition.session_3
       next()
       
     

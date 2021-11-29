@@ -39,7 +39,6 @@ async function isValid(sheets, spreadsheetId, cell) {
   year.set('2027', 8);
   year.set('2028', 9);
   const row = year.get(cell.substr(cell.length - 4));
-  console.log(row)
   let max_money;
   let current_invest;
   let money;
@@ -66,15 +65,12 @@ async function isValid(sheets, spreadsheetId, cell) {
     console.log(err.message);
   }
   if (max_money <= current_invest + money) {
-    console.log("max_money", max_money);
-    console.log("current_invest", current_invest);
-    console.log("money", money);
     return true;
   } else {
     console.log(err.message);
   }
 }
-async function financialStatus(sheets, spreadsheetId, cell) {
+async function financialStatus(sheets, spreadsheetId, cell,session_3) {
   let years = new Map();
   years.set('2022', 3);
   years.set('2023', 4);
@@ -86,8 +82,6 @@ async function financialStatus(sheets, spreadsheetId, cell) {
   let row = years.get(cell.substr(cell.length - 4));
   let available;
   let investment_cost;
-  console.log(row)
-  console.log(cell)
   try {
     available = await read(sheets, `Pilihan investasi!S${row}`, spreadsheetId);
   } catch (err) {
@@ -101,10 +95,6 @@ async function financialStatus(sheets, spreadsheetId, cell) {
     // investment_cost =false;
     // console.log(err.message);
   }
-  console.log(available)
-  console.log(parseFloat(available))
-  console.log(investment_cost)
-  console.log(parseFloat(investment_cost))
   var formatter = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
@@ -115,6 +105,7 @@ async function financialStatus(sheets, spreadsheetId, cell) {
   });
   let cost = parseFloat(available) - parseFloat(investment_cost);
   return ({
+    session_3:session_3,
     available: formatter.format(available),
     investment_cost: formatter.format(cost),
     annual: 300000,
@@ -150,7 +141,7 @@ module.exports = {
           `Pilihan investasi!P5`,
           spreadsheetId
         );
-        if (isChecked == 1) {
+        if (isChecked == 1 && value == 1) {
           return res.status(400).json({
             status: "FAILED",
             message:
@@ -166,12 +157,12 @@ module.exports = {
               spreadsheetId,
               value
             );
-            const result2 = await write(
-              sheets,
-              `Pilihan investasi!P5`,
-              spreadsheetId,
-              1
-            );
+            // const result2 = await write(
+            //   sheets,
+            //   `Pilihan investasi!P5`,
+            //   spreadsheetId,
+            //   1
+            // );
           } else {
             return res.status(400).json({
               status: "FAILED",
@@ -185,7 +176,7 @@ module.exports = {
           `Pilihan investasi!P15`,
           spreadsheetId
         );
-        if (isChecked == 1) {
+        if (isChecked == 1 && value == 1) {
           return res.status(400).json({
             status: "FAILED",
             message: "You can only choose 'Build a new warehouse' once",
@@ -200,12 +191,12 @@ module.exports = {
               spreadsheetId,
               value
             );
-            const result2 = await write(
-              sheets,
-              `Pilihan investasi!P15`,
-              spreadsheetId,
-              1
-            );
+            // const result2 = await write(
+            //   sheets,
+            //   `Pilihan investasi!P15`,
+            //   spreadsheetId,
+            //   1
+            // );
           } else {
             return res.status(400).json({
               status: "FAILED",
@@ -219,7 +210,7 @@ module.exports = {
           `Pilihan investasi!P16`,
           spreadsheetId
         );
-        if (isChecked == 1) {
+        if (isChecked == 1 && value == 1) {
           return res.status(400).json({
             status: "FAILED",
             message: "You can only choose 'Expand current warehouse' once",
@@ -234,12 +225,12 @@ module.exports = {
               spreadsheetId,
               value
             );
-            const result2 = await write(
-              sheets,
-              `Pilihan investasi!P16`,
-              spreadsheetId,
-              1
-            );
+            // const result2 = await write(
+            //   sheets,
+            //   `Pilihan investasi!P16`,
+            //   spreadsheetId,
+            //   1
+            // );
           } else {
             return res.status(400).json({
               status: "FAILED",
@@ -253,7 +244,7 @@ module.exports = {
           `Pilihan investasi!P26`,
           spreadsheetId
         );
-        if (isChecked == 1) {
+        if (isChecked == 1 && value == 1) {
           return res.status(400).json({
             status: "FAILED",
             message:
@@ -269,12 +260,12 @@ module.exports = {
               spreadsheetId,
               value
             );
-            const result2 = await write(
-              sheets,
-              `Pilihan investasi!P26`,
-              spreadsheetId,
-              1
-            );
+            // const result2 = await write(
+            //   sheets,
+            //   `Pilihan investasi!P26`,
+            //   spreadsheetId,
+            //   1
+            // );
           } else {
             return res.status(400).json({
               status: "FAILED",
@@ -288,7 +279,7 @@ module.exports = {
           `Pilihan investasi!P33`,
           spreadsheetId
         );
-        if (isChecked == 1) {
+        if (isChecked == 1 && value == 1) {
           return res.status(400).json({
             status: "FAILED",
             message:
@@ -304,12 +295,12 @@ module.exports = {
               spreadsheetId,
               value
             );
-            const result2 = await write(
-              sheets,
-              `Pilihan investasi!P33`,
-              spreadsheetId,
-              1
-            );
+            // const result2 = await write(
+            //   sheets,
+            //   `Pilihan investasi!P33`,
+            //   spreadsheetId,
+            //   1
+            // );
           } else {
             return res.status(400).json({
               status: "FAILED",
@@ -338,7 +329,7 @@ module.exports = {
         message: err.message,
       });
     }
-    const result = await financialStatus(sheets, spreadsheetId, cell);
+    const result = await financialStatus(sheets, spreadsheetId, cell,req.session_3);
     return res.status(200).json({
       status: "SUCCESS",
       data: result,
@@ -452,7 +443,7 @@ module.exports = {
   const finance = await financialStatus(sheets, spreadsheetId, req.current_year);
   return res.status(200).json({
     status: "SUCCESS",
-    data: {financial_status:finance, announcement:result, period:req.current_year},
+    data: {session_3:req.session_3,financial_status:finance, announcement:result, period:req.current_year},
   });
   },
   submit_final: async (req, res) => {
