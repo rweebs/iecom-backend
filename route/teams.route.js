@@ -237,7 +237,7 @@ module.exports = function(app) {
     [
       authJwt.verifyToken,
       GetTeamName.competitionSimulation,
-      GetTeamName.competitionSimulation2
+      GetTeamName.competitionSimulation3
     ],
     simulation.status
   );

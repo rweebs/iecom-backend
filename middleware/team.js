@@ -155,13 +155,27 @@ competitionTeam1= async (req, res, next) => {
       
     
   };
-  
+  competitionSimulation3= async (req, res, next) => {
+    let competition= await Team.findOne({name:req.team})
+      if(competition.is_submited_2){
+        return res.status(401).send({
+          message: "Unauthorized!"
+        });
+      } 
+      req.sheet_id=competition.sheet_id
+      req.current_year=competition.current_year
+      req.session_3=competition.session_3
+      next()
+      
+    
+  };
 
   const GetTeamName = {
     competitionTeam,
     competitionTeam1,
     competitionTeam2,
     competitionSimulation,
-    competitionSimulation2
+    competitionSimulation2,
+    competitionSimulation3
   };
   module.exports = GetTeamName;
