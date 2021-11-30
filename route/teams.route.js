@@ -24,7 +24,7 @@ module.exports = function(app) {
     "/api/teams/activate",
     controller.activate
   );
-  app.get(
+  app.post(
     "/api/teams/mcq/populate",
     controller.populate
   );
