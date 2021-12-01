@@ -241,5 +241,13 @@ module.exports = function(app) {
     ],
     simulation.status
   );
+  app.get(
+    "/api/simulation/status_final",
+    [
+      authJwt.verifyToken,
+      GetTeamName.competitionSimulation,
+    ],
+    simulation.status_final
+  );
 
 };

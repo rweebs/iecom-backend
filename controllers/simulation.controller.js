@@ -491,6 +491,13 @@ module.exports = {
             data:result
         }))
     },
+    status_final: async (req, res) => {
+      let team = await Team.findOne({name:req.team})
+        return(res.status(200).json({
+                status:"SUCCESS",
+                data:team.final_cash
+            }))
+    },
   
 
 };
