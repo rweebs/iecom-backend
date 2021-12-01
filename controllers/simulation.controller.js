@@ -68,6 +68,7 @@ async function isValid(sheets, spreadsheetId, cell) {
     return true;
   } else {
     console.log(err.message);
+    return false;
   }
 }
 async function financialStatus(sheets, spreadsheetId, cell,session_3) {
