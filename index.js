@@ -33,7 +33,7 @@ const mcqRouter=require('./route/mcqs.route')
 const tfRouter=require('./route/tfs.route')
 const fitbRouter=require('./route/fitbs.route')
 app.use(cors({
-    origin: ['http://localhost:3000','http://127.0.0.1:5500','https://bist-dev.herokuapp.com','https://bistleague.azurewebsites.net','https://bistleague.com','https://iecom-preview.vercel.app','https://iecom.asia','https://www.iecom.asia','https://iecom-r9q057ntq-vincentiussgk.vercel.app','https://iecom-5kx6gjoxl-vincentiussgk.vercel.app','https://iecom-lhpf2k9ff-vincentiussgk.vercel.app','https://iecom-1s019jagh-vincentiussgk.vercel.app']
+    origin: ['http://localhost:3000','http://127.0.0.1:5500','https://bist-dev.herokuapp.com','https://bistleague.azurewebsites.net','https://bistleague.com','https://iecom-preview.vercel.app','https://iecom.asia','https://www.iecom.asia','https://iecom-r9q057ntq-vincentiussgk.vercel.app','https://iecom-5kx6gjoxl-vincentiussgk.vercel.app','https://iecom-lhpf2k9ff-vincentiussgk.vercel.app','https://iecom-1s019jagh-vincentiussgk.vercel.app','https://iecom-rn98m7a4a-vincentiussgk.vercel.app']
   }));
 
 //established mongoose connection
