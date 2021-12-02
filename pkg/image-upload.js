@@ -67,7 +67,12 @@ const uploadSingleFIle=(req,res)=>{
             if(err){
                 return err
             }
-            return (res.status(200).json({link:req.files[0].location}))
+            const link= req.files[0].location
+            if(link){
+            return (res.status(200).json({link:link}))}
+            else{
+                return res.status(200).json({link:"Error uploading file"})
+            }
         })
     }
     

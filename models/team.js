@@ -113,6 +113,9 @@ const teamSchema = new Schema({
     score:{
         type: Number
     },
+    referral:{
+        type: String
+    },
     session_1:{
         type:Date,
     },

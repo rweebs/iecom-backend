@@ -140,11 +140,11 @@ competitionTeam1= async (req, res, next) => {
         competition.session_3 = new Date();
         await competition.save();
       }else{
-        // if(date.getTime()-competition.session_3.getTime()>3600000){
-        //   return res.status(401).send({
-        //       message: "Unauthorized!"
-        //     });
-        // }
+        if(date.getTime()-competition.session_3.getTime()>150*60*1000){
+          return res.status(401).send({
+              message: "Unauthorized!"
+            });
+        }
       }
       
       
