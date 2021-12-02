@@ -29,7 +29,7 @@ async function write(sheets, range, spreadsheetId, values) {
   });
   return response;
 }
-async function isValid(sheets, spreadsheetId, cell) {
+async function isValid(sheets, spreadsheetId, cell,value) {
   let year = new Map();
   year.set('2022', 3);
   year.set('2023', 4);
@@ -45,15 +45,17 @@ async function isValid(sheets, spreadsheetId, cell) {
   
   try {
     max_money = await read(sheets, `Pilihan investasi!S${row}`, spreadsheetId);
+    console.log(max_money);
   } catch (err) {
     console.log(err.message);
   }
   try {
-    current_money = await read(
+    current_invest = await read(
       sheets,
       `Pilihan investasi!T${row}`,
       spreadsheetId
     );
+    console.log(current_invest);
   } catch (err) {
     console.log(err.message);
   }
@@ -64,10 +66,11 @@ async function isValid(sheets, spreadsheetId, cell) {
   } catch (err) {
     console.log(err.message);
   }
-  if (max_money <= current_invest + money) {
+  if (parseInt(max_money) > parseInt(current_invest) + parseInt(money)*value) {
+    console.log(max_money > current_invest + money*value);
     return true;
   } else {
-    console.log(err.message);
+    // console.log(err.message);
     return false;
   }
 }
@@ -135,7 +138,7 @@ module.exports = {
         message: "error request",
       });
     }
-    try {
+    // try {
       if (cell.includes("marketing_2")) {
         const isChecked = await read(
           sheets,
@@ -150,7 +153,7 @@ module.exports = {
           });
         } else {
           if (
-            await isValid(sheets, spreadsheetId, cell)
+            await isValid(sheets, spreadsheetId, cell, value)
           ) {
             const result = await write(
               sheets,
@@ -184,7 +187,7 @@ module.exports = {
           });
         } else {
           if (
-            await isValid(sheets, spreadsheetId, cell)
+            await isValid(sheets, spreadsheetId, cell, value)
           ) {
             const result = await write(
               sheets,
@@ -218,7 +221,7 @@ module.exports = {
           });
         } else {
           if (
-            await isValid(sheets, spreadsheetId, cell)
+            await isValid(sheets, spreadsheetId, cell,value)
           ) {
             const result = await write(
               sheets,
@@ -253,7 +256,7 @@ module.exports = {
           });
         } else {
           if (
-            await isValid(sheets, spreadsheetId, cell)
+            await isValid(sheets, spreadsheetId, cell, value)
           ) {
             const result = await write(
               sheets,
@@ -288,7 +291,7 @@ module.exports = {
           });
         } else {
           if (
-            await isValid(sheets, spreadsheetId, cell)
+            await isValid(sheets, spreadsheetId, cell, value)
           ) {
             const result = await write(
               sheets,
@@ -310,8 +313,8 @@ module.exports = {
           }
         }
       } else {
-        if (await isValid(sheets, spreadsheetId, cell)) {
-          const result = await write(
+        if (await isValid(sheets, spreadsheetId, cell, value)) {
+          await write(
             sheets,
             Investasi.get(cell),
             spreadsheetId,
@@ -324,12 +327,12 @@ module.exports = {
           });
         }
       }
-    } catch (err) {
-      return res.status(400).json({
-        status: "FAILED",
-        message: err.message,
-      });
-    }
+    // } catch (err) {
+    //   return res.status(400).json({
+    //     status: "FAILED",
+    //     message: err.message,
+    //   });
+    // }
     const result = await financialStatus(sheets, spreadsheetId, cell,req.session_3);
     return res.status(200).json({
       status: "SUCCESS",
