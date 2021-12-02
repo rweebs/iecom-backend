@@ -382,6 +382,7 @@ module.exports = {
   const team = await Team.findOne({name: req.team});
   team.current_year = (parseInt(req.current_year) + 1).toString();
   const result={
+    "period":parseInt(req.current_year) + 1,
     "Product Sold": data[0][4],
     "Market Share Change": data[0][5],
     "Early Year Cash": data[0][0],
