@@ -312,8 +312,13 @@ module.exports ={
             }))
         }
         if (team.mcq[req.query.page-1]){
-            team.mcq[req.query.page-1].answer=req.query.answer
-            team.mcq[req.query.page-1].isFlagged=req.query.isFlagged
+            if(req.query.answer){
+                team.mcq[req.query.page-1].answer=req.query.answer
+            }
+            if(req.query.isFlagged){
+                team.mcq[req.query.page-1].isFlagged=req.query.isFlagged
+            }
+            
         }else{
             return(res.status(400).json({
                 status: "FAILED",
@@ -419,8 +424,14 @@ module.exports ={
             }))
         }
         if (team.tf[req.query.page-1]){
-            team.tf[req.query.page-1].answer=req.query.answer
-            team.tf[req.query.page-1].isFlagged=req.query.isFlagged
+            if(req.query.answer){
+                team.tf[req.query.page-1].answer=req.query.answer
+            }
+            if(req.query.isFlagged){
+                team.tf[req.query.page-1].isFlagged=req.query.isFlagged
+            }
+            
+            
         }else{
             return(res.status(400).json({
                 status: "FAILED",
@@ -525,8 +536,13 @@ module.exports ={
             }))
         }
         if (team.fitb[req.query.page-1]){
-            team.fitb[req.query.page-1].answer=req.query.answer
-            team.fitb[req.query.page-1].isFlagged=req.query.isFlagged
+            if(req.query.answer){
+                team.fitb[req.query.page-1].answer=req.query.answer
+            }
+            if(req.query.isFlagged){
+                team.fitb[req.query.page-1].isFlagged=req.query.isFlagged
+            }
+            
         }else{
             return(res.status(400).json({
                 status: "FAILED",
