@@ -656,10 +656,11 @@ module.exports ={
             
         }
         if(req.query.session==2){
-            if(!team.session_2){
+            date=Date.now()
+            if(date<team.session_2){
                 team.session_2=Date.now()
-                team.isStartedSession2=true
             }
+            team.isStartedSession2=true
             
         }
         await team.save((err,result)=>{
