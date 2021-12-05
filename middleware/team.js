@@ -141,6 +141,8 @@ competitionTeam1= async (req, res, next) => {
         await competition.save();
       }else{
         if(date.getTime()-competition.session_3.getTime()>150*60*1000){
+          competition.is_submited_2=true
+          await competition.save();
           return res.status(401).send({
               message: "Unauthorized!"
             });
