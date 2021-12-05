@@ -154,7 +154,7 @@ competitionTeam1= async (req, res, next) => {
       }
       let current_year;
       if(session+2022>2028){
-        current_year=2028  
+        current_year=(2028).toString()  
       }else{
         current_year = (session+2022).toString()
       }
