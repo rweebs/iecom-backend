@@ -146,7 +146,17 @@ competitionTeam1= async (req, res, next) => {
             });
         }
       }
-      
+
+      const duration = 20
+      const date = Date.now()
+      let session = Math.floor((date.getMinutes() - competition.session_3.getMinutes())/20) 
+      if(session > 4){
+        session = Math.floor((date.getMinutes() - 10 - competition.session_3.getMinutes())/20)
+      }
+      current_year = (session+2021).toString()
+
+      competition.current_year = current_year
+      await competition.save();
       
       req.sheet_id=competition.sheet_id
       req.current_year=competition.current_year
@@ -160,6 +170,7 @@ competitionTeam1= async (req, res, next) => {
       req.sheet_id=competition.sheet_id
       req.current_year=competition.current_year
       req.session_3=competition.session_3
+      req.is_submited_2=competition.is_submited_2
       next()
       
     
