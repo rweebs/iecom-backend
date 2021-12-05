@@ -148,7 +148,6 @@ competitionTeam1= async (req, res, next) => {
       }
 
       const duration = 20
-      const date = Date.now()
       let session = Math.floor((date.getMinutes() - competition.session_3.getMinutes())/20) 
       if(session > 4){
         session = Math.floor((date.getMinutes() - 10 - competition.session_3.getMinutes())/20)
