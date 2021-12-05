@@ -110,8 +110,8 @@ async function financialStatus(sheets, spreadsheetId, cell,session_3) {
   let cost = parseFloat(available) - parseFloat(investment_cost);
   return ({
     session_3:session_3,
-    available: formatter.format(available),
-    investment_cost: formatter.format(cost),
+    available: formatter.format(cost),
+    investment_cost: formatter.format(investment_cost),
     annual: 300000,
   })
 
