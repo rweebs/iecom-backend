@@ -381,9 +381,10 @@ module.exports = {
     year.set('2026', 'Keuangan!B9:G9');
     year.set('2027', 'Keuangan!B10:G10');
     year.set('2028', 'Keuangan!B11:G11');
-  const data = await read_multiple(sheets, year.get(req.current_year), spreadsheetId);
+    const current_year=(parseInt(req.current_year)-1).toString();
+  const data = await read_multiple(sheets, year.get(current_year), spreadsheetId);
   const team = await Team.findOne({name: req.team});
-  team.current_year = (parseInt(req.current_year) + 1).toString();
+  // team.current_year = (parseInt(req.current_year) + 1).toString();
   const result={
     "period":parseInt(req.current_year) + 1,
     "Product Sold": data[0][4],
