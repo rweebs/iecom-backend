@@ -147,10 +147,10 @@ competitionTeam1= async (req, res, next) => {
         }
       }
 
-      const duration = 20
-      let session = Math.floor((date.getMinutes() - competition.session_3.getMinutes())/20) 
+      const duration = 2
+      let session = Math.floor((date.getMinutes() - competition.session_3.getMinutes())/duration) 
       if(session > 4){
-        session = Math.floor((date.getMinutes() - 10 - competition.session_3.getMinutes())/20)
+        session = Math.floor((date.getMinutes() - 1 - competition.session_3.getMinutes())/duration)
       }
       current_year = (session+2021).toString()
 
