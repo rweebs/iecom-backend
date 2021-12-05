@@ -152,7 +152,13 @@ competitionTeam1= async (req, res, next) => {
       if(session > 4){
         session = Math.floor((date.getMinutes() - 1 - competition.session_3.getMinutes())/duration)
       }
-      current_year = (session+2021).toString()
+      let current_year;
+      if(session+2022>2028){
+        current_year=2028  
+      }else{
+        current_year = (session+2022).toString()
+      }
+      
 
       competition.current_year = current_year
       await competition.save();
