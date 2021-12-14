@@ -449,7 +449,7 @@ module.exports = {
   const finance = await financialStatus(sheets, spreadsheetId, req.current_year);
   return res.status(200).json({
     status: "SUCCESS",
-    data: {session_3:req.session_3,financial_status:finance, announcement:result, period:req.current_year},
+    data: {session_3:req.session_3,financial_status:finance, announcement:result.split("._."), period:req.current_year},
   });
   },
   submit_final: async (req, res) => {
@@ -462,6 +462,14 @@ module.exports = {
     const final_cash = await read(sheets, 'Keuangan!B12', spreadsheetId);
     team.final_cash = final_cash
     team.is_submited_2 = true
+    var formatter = new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+    
+      // These options are needed to round to whole numbers if that's what you want.
+      //minimumFractionDigits: 0, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
+      //maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
+    });
     await team.save((err,result)=>{
       if(err){
           return(res.status(400).json({
@@ -471,7 +479,7 @@ module.exports = {
       }
       return(res.status(200).json({
               status:"SUCCESS",
-              data:final_cash
+              data:formatter.format(final_cash)
           }))
           
       }
@@ -501,7 +509,7 @@ module.exports = {
       let team = await Team.findOne({name:req.team})
         return(res.status(200).json({
                 status:"SUCCESS",
-                data:team.final_cash
+                data:formatter.format(team.final_cash)
             }))
     },
   
