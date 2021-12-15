@@ -150,9 +150,9 @@ competitionTeam1= async (req, res, next) => {
       }
 
       const duration = 2
-      let session = Math.floor((date.getMinutes() - competition.session_3.getMinutes())/duration) 
+      let session = Math.floor((date - competition.session_3).getMinutes()/duration) 
       if(session > 4){
-        session = Math.floor((date.getMinutes() - 1 - competition.session_3.getMinutes())/duration)
+        session = Math.floor(((date - competition.session_3).getMinutes()-1)/duration)
       }
       let current_year;
       if(session+2022>2028){
