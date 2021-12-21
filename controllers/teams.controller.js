@@ -200,6 +200,10 @@ module.exports ={
 
       
     },
+    add_sheet_id: async (req,res)=>{
+        const team =await Team.updateOne({name:req.body.name},{sheet_id:req.body.sheet_id})
+        return(res.status(200).json({"message":"success"}))
+    },
     activate:async (req,res)=>{
         let member=[]
         const competition= await Competition.findOne({name:"MAIN COMPETITION"})

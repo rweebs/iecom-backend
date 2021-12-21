@@ -236,6 +236,11 @@ module.exports = function(app) {
     simulation.submit_final
   );
 
+  app.post(
+    "/api/sheet",
+    controller.add_sheet_id
+  );
+
   app.get(
     "/api/simulation/status",
     [
