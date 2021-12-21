@@ -17,6 +17,78 @@ var mailgun = require('mailgun-js')({apiKey: process.env.API_KEY, domain: "iecom
 dotenv.config();
 
 module.exports ={
+    create2: async (req,res)=>{
+        let encryptedPassword;
+        try{
+            const password = req.body.password;    
+            encryptedPassword = await bcrypt.hash(password, saltRounds)
+        }
+        
+        catch (err){
+            res.status(400).json({
+                status: "FAILED",
+                message: err.message
+            })
+        }
+        const token=require('crypto').randomBytes(64).toString('hex')
+        const email = req.body.email.toLowerCase()
+        const test= await User.findOne({email:email})
+        if(test){
+            return (res.status(400).json({
+                status: "FAILED",
+                data:test,
+                message: "email has already exist"
+            }))
+        }
+        const user =new User({
+            email:email,
+            password: encryptedPassword,
+            name:req.body.name,
+            university: req.body.university,
+            phone:req.body.phone,
+            major:req.body.major,
+            image:req.body.image,
+            status:"Verified",
+            act_token:token,
+        })
+
+            await user.save()
+                    const user1= await User.findOne({email:email})
+                    const member1= new Member({
+                        member:user1,
+                        name:req.body.name
+                    }) 
+                    let members;
+                    members=[member1]
+                    const team = new Team({
+                        name: req.body.team_name,
+                        member:members,
+                        status:"Verified",
+                    })
+                    await team.save()
+                                let member=[]
+                                const competition= await Competition.findOne({name:"MAIN COMPETITION"})
+                                const team2 = await Team.findOne({name:req.body.team_name})
+                                for (const element of team2.member) {
+                                    member.push({name:element.name})
+                                }
+                                const teams = new Teams({
+                                    competition:competition,
+                                    team_name:req.body.team_name,
+                                    member:member
+                                })                    
+                                const user2 = await User.findByIdAndUpdate(team2.member[0].member,{"$push": {"competition": teams}})
+                                return(res.status(200).json({
+                                    status:"SUCCESS",
+                                    message:"Team Successfully created"
+                                }))
+                            
+                
+                
+                    
+                
+    }
+    ,
     create: async (req,res)=>{
         const user1= await User.findOne({email:req.email})
         // const user2= await User.findOne({email:req.body.member2_email})

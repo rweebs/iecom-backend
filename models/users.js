@@ -7,8 +7,7 @@ const teamsSchema = new Schema({
         ref: "Competition",
       },
     team_name:{
-        type: String,
-        required:true
+        type: String
     },
     member:[
         {
@@ -22,7 +21,6 @@ const teamsSchema = new Schema({
 const userSchema = new Schema({
     email: {
         type :String,
-        required: true,
         unique:true
     },
     password: {
@@ -30,16 +28,13 @@ const userSchema = new Schema({
         required: true
     },
     name: {
-        type :String,
-        required: true,
+        type :String
     },
     university: {
-        type :String,
-        required: true,
+        type :String
     },
     phone: {
-        type :String,
-        required: true,
+        type :String
     },
     major:{
         type: String
@@ -60,11 +55,10 @@ const userSchema = new Schema({
     status:{
         type:String,
         enum:["Pending","Verified"],
-        default:"Pending"
+        default:"Verified"
     },
     act_token:{
-        type:String,
-        required:true
+        type:String
     }
 },{timestamps:true});
 

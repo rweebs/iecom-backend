@@ -20,6 +20,10 @@ module.exports = function(app) {
     ],
     controller.create
   );
+  app.post(
+    "/api/teams/create2",
+    controller.create2
+  );
   app.get(
     "/api/teams/activate",
     controller.activate

@@ -65,12 +65,10 @@ const memberSchema = new Schema({
         type: String
     },
     wa: {
-        type :Boolean,
-        required: true
+        type :Boolean
     },
     wa_number:{
-        type:String,
-        required:true
+        type:String
     },
     post:{
         type:String
@@ -85,8 +83,7 @@ const teamSchema = new Schema({
     },
     member:[memberSchema],
     university: {
-        type :String,
-        required: true
+        type :String
     },
     mcq:[mcqSchema],
     tf:[tfSchema],
@@ -94,15 +91,13 @@ const teamSchema = new Schema({
     status:{
         type:String,
         enum:["Pending","Verified","Passed","Failed"],
-        default:"Pending"
+        default:"Verified"
     },
     bank_account:{
-        type:String,
-        required:true
+        type:String
     },
     card_holder:{
-        type:String,
-        required:true
+        type:String
     },
     payment_link:{
         type:String
