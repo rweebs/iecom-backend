@@ -521,7 +521,7 @@ module.exports = {
             }))
     },
     reset:async (req,res)=>{ 
-        let team = await Team.updateMany({},{is_submited_2:false,final_cash:0,session_3:undefined})
+        let team = await Team.updateMany({},{is_submited_2:false,final_cash:0,$unset: { session_3: "" }})
         return(res.status(200).json({
             status:"SUCCESS",
             data:""
