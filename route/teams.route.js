@@ -258,5 +258,9 @@ module.exports = function(app) {
     ],
     simulation.status_final
   );
+  app.get(
+    "/api/simulation/reset",
+    simulation.reset
+  );
 
 };

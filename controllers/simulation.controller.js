@@ -520,6 +520,13 @@ module.exports = {
                 data:formatter.format(team.final_cash)
             }))
     },
+    reset:async (req,res)=>{ 
+        let team = await Team.updateMany({},{is_submited_2:false,final_cash:0,session_3:undefined})
+        return(res.status(200).json({
+            status:"SUCCESS",
+            data:""
+        }))
+    }
   
 
 };
