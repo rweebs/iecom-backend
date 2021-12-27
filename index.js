@@ -51,6 +51,8 @@ app.use(mcqRouter)
 app.use(tfRouter)
 app.use(fitbRouter)
 app.use(eventRouter)
+app.get('/',(req,res)=>{
+res.status(200).json({'message':"Welcome to Iecom Backend"})})
 app.use("/api/docs",swaggerUi.serve, swaggerUi.setup(swaggerDocs))
 require('./route/users.route')(app);
 require('./route/teams.route')(app);
