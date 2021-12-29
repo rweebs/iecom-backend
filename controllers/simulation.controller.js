@@ -54,6 +54,7 @@ async function isValid(sheets, spreadsheetId, cell,value) {
     // console.log(max_money);
   } catch (err) {
     // console.log(err.message);
+    return {result:false,message:"Server Error Please submit another request in 5 seconds"}
   }
   try {
     current_invest = await read(
@@ -64,6 +65,7 @@ async function isValid(sheets, spreadsheetId, cell,value) {
     // console.log(current_invest);
   } catch (err) {
     // console.log(err.message);
+    return {result:false,message:"Server Error Please submit another request in 5 seconds"}
   }
   try {
     const temp = Investasi.get(cell).replace("Pilihan investasi!", "");
@@ -71,13 +73,14 @@ async function isValid(sheets, spreadsheetId, cell,value) {
     money = await read(sheets, `Pilihan investasi!G${temp2}`, spreadsheetId);
   } catch (err) {
     // console.log(err.message);
+    return {result:false,message:"Server Error Please submit another request in 5 seconds"}
   }
   if (parseInt(max_money) > parseInt(current_invest) + parseInt(money)*value) {
     // console.log(max_money > current_invest + money*value);
-    return true;
+    return {result:true,message:"true"}
   } else {
     // console.log(err.message);
-    return false;
+    return {result:false,message:"Not enough money"}
   }
 }
 async function financialStatus(sheets, spreadsheetId, cell,session_3) {
@@ -170,8 +173,9 @@ module.exports = {
               "You can only choose 'Install Customer Relationship Management software' once",
           });
         } else {
+          const {result,message} = await isValid(sheets, spreadsheetId, cell, value)
           if (
-            await isValid(sheets, spreadsheetId, cell, value)
+            result
           ) {
             const result = await write(
               sheets,
@@ -188,7 +192,7 @@ module.exports = {
           } else {
             return res.status(400).json({
               status: "FAILED",
-              message: "Not enough money",
+              message: message,
             });
           }
         }
@@ -204,8 +208,9 @@ module.exports = {
             message: "You can only choose 'Build a new warehouse' once",
           });
         } else {
+          const {result,message} = await isValid(sheets, spreadsheetId, cell, value)
           if (
-            await isValid(sheets, spreadsheetId, cell, value)
+            result
           ) {
             const result = await write(
               sheets,
@@ -222,7 +227,7 @@ module.exports = {
           } else {
             return res.status(400).json({
               status: "FAILED",
-              message: "Not enough money",
+              message: message,
             });
           }
         }
@@ -238,8 +243,9 @@ module.exports = {
             message: "You can only choose 'Expand current warehouse' once",
           });
         } else {
+          const {result,message} = await isValid(sheets, spreadsheetId, cell, value)
           if (
-            await isValid(sheets, spreadsheetId, cell,value)
+            result
           ) {
             const result = await write(
               sheets,
@@ -256,7 +262,7 @@ module.exports = {
           } else {
             return res.status(400).json({
               status: "FAILED",
-              message: "Not enough money",
+              message: message,
             });
           }
         }
@@ -273,8 +279,9 @@ module.exports = {
               "You can only choose 'Install Supplier Relationship Management software' once",
           });
         } else {
+          const {result,message} = await isValid(sheets, spreadsheetId, cell, value)
           if (
-            await isValid(sheets, spreadsheetId, cell, value)
+            result
           ) {
             const result = await write(
               sheets,
@@ -291,7 +298,7 @@ module.exports = {
           } else {
             return res.status(400).json({
               status: "FAILED",
-              message: "Not enough money",
+              message: message,
             });
           }
         }
@@ -331,7 +338,8 @@ module.exports = {
           }
         }
       } else {
-        if (await isValid(sheets, spreadsheetId, cell, value)) {
+        const {result,message} = await isValid(sheets, spreadsheetId, cell, value)
+        if (result) {
           await write(
             sheets,
             Investasi.get(cell),
@@ -341,7 +349,7 @@ module.exports = {
         } else {
           return res.status(400).json({
             status: "FAILED",
-            message: "Not enough money",
+            message: message,
           });
         }
       }
