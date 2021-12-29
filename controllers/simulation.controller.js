@@ -29,6 +29,12 @@ async function write(sheets, range, spreadsheetId, values) {
   });
   return response;
 }
+
+function generateRandomAccount() {
+  const paths=['./load1.json','./load2.json','./load3.json','./load4.json','./load5.json']
+  let random = Math.floor(Math.random())%paths.length;
+  return paths[random]
+}
 async function isValid(sheets, spreadsheetId, cell,value) {
   let year = new Map();
   year.set('2022', 3);
@@ -45,9 +51,9 @@ async function isValid(sheets, spreadsheetId, cell,value) {
   
   try {
     max_money = await read(sheets, `Pilihan investasi!S${row}`, spreadsheetId);
-    console.log(max_money);
+    // console.log(max_money);
   } catch (err) {
-    console.log(err.message);
+    // console.log(err.message);
   }
   try {
     current_invest = await read(
@@ -55,19 +61,19 @@ async function isValid(sheets, spreadsheetId, cell,value) {
       `Pilihan investasi!T${row}`,
       spreadsheetId
     );
-    console.log(current_invest);
+    // console.log(current_invest);
   } catch (err) {
-    console.log(err.message);
+    // console.log(err.message);
   }
   try {
     const temp = Investasi.get(cell).replace("Pilihan investasi!", "");
     const temp2 = temp.substring(1, temp.length);
     money = await read(sheets, `Pilihan investasi!G${temp2}`, spreadsheetId);
   } catch (err) {
-    console.log(err.message);
+    // console.log(err.message);
   }
   if (parseInt(max_money) > parseInt(current_invest) + parseInt(money)*value) {
-    console.log(max_money > current_invest + money*value);
+    // console.log(max_money > current_invest + money*value);
     return true;
   } else {
     // console.log(err.message);
@@ -125,6 +131,7 @@ async function financialStatus(sheets, spreadsheetId, cell,session_3) {
 module.exports = {
   edit: async (req, res) => {
     const auth = await google.auth.getClient({
+      keyFile:generateRandomAccount(),
       scopes: ["https://www.googleapis.com/auth/spreadsheets"],
     });
     
@@ -341,6 +348,7 @@ module.exports = {
   },
   current_condition: async (req, res) => {
     const auth = await google.auth.getClient({
+      keyFile:generateRandomAccount(),
       scopes: ["https://www.googleapis.com/auth/spreadsheets"],
     });
     
@@ -368,6 +376,7 @@ module.exports = {
   },
   submit_current_year: async (req, res) => {
     const auth = await google.auth.getClient({
+      keyFile:generateRandomAccount(),
       scopes: ["https://www.googleapis.com/auth/spreadsheets"],
     });
     
@@ -402,6 +411,7 @@ module.exports = {
   },
   current_data: async (req, res) => {
     const auth = await google.auth.getClient({
+      keyFile:generateRandomAccount(),
       scopes: ["https://www.googleapis.com/auth/spreadsheets"],
     });
     const sheets = google.sheets({ version: "v4", auth });
@@ -454,6 +464,7 @@ module.exports = {
   },
   submit_final: async (req, res) => {
     const auth = await google.auth.getClient({
+      keyFile:generateRandomAccount(),
       scopes: ["https://www.googleapis.com/auth/spreadsheets"],
     });
     const sheets = google.sheets({ version: "v4", auth });
