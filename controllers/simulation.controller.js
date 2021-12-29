@@ -32,8 +32,7 @@ async function write(sheets, range, spreadsheetId, values) {
 
 function generateRandomAccount() {
   const paths=['./load1.json','./server11.json']
-  let random = Math.floor(Math.random())%paths.length;
-  return paths[random]
+  return paths[Math.floor(Math.random()*paths.length)]
 }
 async function isValid(sheets, spreadsheetId, cell,value) {
   let year = new Map();
