@@ -365,35 +365,72 @@ module.exports = {
     });
   },
   current_condition: async (req, res) => {
-    const auth = await google.auth.getClient({
-      keyFile:req.server,
-      scopes: ["https://www.googleapis.com/auth/spreadsheets"],
-    });
-    
-    const sheets = google.sheets({ version: "v4", auth });
-    const spreadsheetId = req.sheet_id;
-    let year = new Map();
-  year.set('2022', 'Current condition!B3:B26');
-  year.set('2023', 'Current condition!C3:C26');
-  year.set('2024', 'Current condition!D3:D26');
-  year.set('2025', 'Current condition!E3:E26');
-  year.set('2026', 'Current condition!F3:F26');
-  year.set('2027', 'Current condition!G3:G26');
-  year.set('2028', 'Current condition!H3:H26');
-    const range3 = 'Current condition!A3:A26';
-    const sample2 = await read_multiple(sheets, year.get(req.current_year), spreadsheetId)
-    const sample3 = await read_multiple(sheets, range3, spreadsheetId)
-    let result = {}
-    for (let i = 0; i < sample2.length; i++) {
-      result[sample3[i][0]] = sample2[i][0]
+    try{
+      const auth = await google.auth.getClient({
+        keyFile:req.server,
+        scopes: ["https://www.googleapis.com/auth/spreadsheets"],
+      });
+      
+      const sheets = google.sheets({ version: "v4", auth });
+      const spreadsheetId = req.sheet_id;
+      let year = new Map();
+    year.set('2022', 'Current condition!B3:B26');
+    year.set('2023', 'Current condition!C3:C26');
+    year.set('2024', 'Current condition!D3:D26');
+    year.set('2025', 'Current condition!E3:E26');
+    year.set('2026', 'Current condition!F3:F26');
+    year.set('2027', 'Current condition!G3:G26');
+    year.set('2028', 'Current condition!H3:H26');
+      const range3 = 'Current condition!A3:A26';
+      const sample2 = await read_multiple(sheets, year.get(req.current_year), spreadsheetId)
+      const sample3 = await read_multiple(sheets, range3, spreadsheetId)
+      let result = {}
+      for (let i = 0; i < sample2.length; i++) {
+        result[sample3[i][0]] = sample2[i][0]
+      }
+      return res.status(200).json({
+        status: "SUCCESS",
+        data: result,
+      });
     }
-    return res.status(200).json({
-      status: "SUCCESS",
-      data: result,
-    });
+    catch(err){
+      data = {
+          "Year": "$NaN",
+          "Country last year demand": "$NaN",
+          "Current company market share": "$NaN",
+          "Current cost per unit": "$NaN",
+          "Selling price per unit": "$NaN",
+          "Product sold last year": "$NaN",
+          "Agitator machine last year defect rate":"$NaN",
+          "Coater machine last year defect rate": "$NaN",
+          "Dryer machine last year defect rate": "$NaN",
+          "Slitter machine last year defect rate": "$NaN",
+          "Winder machine last year defect rate": "$NaN",
+          "Packager machine last year defect rate": "$NaN",
+          "New warehouse": "$NaN",
+          "Current warehouse expansion": "$NaN",
+          "Big truck owned": "$NaN",
+          "Medium truck owned": "$NaN",
+          "Small truck owned": "3",
+          "Customer Relationship Management software": "$NaN",
+          "CSR Program last year": "$NaN",
+          "Supplier Relationship Management software": "$NaN",
+          "Safety training last year": "$NaN",
+          "Efficiency enhancer training last year": "$NaN",
+          "Quality control training last year": "$NaN",
+          "Waste management system": "$NaN"
+        
+      }
+      return res.status(200).json({
+        status: "Failed",
+        data: data,
+      });
+    }
+    
   },
   submit_current_year: async (req, res) => {
-    const auth = await google.auth.getClient({
+    try{
+      const auth = await google.auth.getClient({
       keyFile:req.server,
       scopes: ["https://www.googleapis.com/auth/spreadsheets"],
     });
@@ -426,9 +463,25 @@ module.exports = {
     status: "SUCCESS",
     data: result,
   });
+}catch(err){
+  const result={
+    "period":"NaN",
+    "Product Sold": "NaN",
+    "Market Share Change":"NaN",
+    "Early Year Cash": "NaN",
+    "Total Cost": "NaN",
+    "Profit":"NaN",
+    "Cash": "NaN",
+  }
+  return res.status(200).json({
+    status: "SUCCESS",
+    data: result,
+  });
+}
   },
   current_data: async (req, res) => {
-    const auth = await google.auth.getClient({
+    try{
+      const auth = await google.auth.getClient({
       keyFile:req.server,
       scopes: ["https://www.googleapis.com/auth/spreadsheets"],
     });
@@ -478,8 +531,19 @@ module.exports = {
   return res.status(200).json({
     status: "SUCCESS",
     data: {session_3:req.session_3,financial_status:finance, announcement:result.split("._."), period:req.current_year},
-  });
-  },
+  });}
+  catch(err){
+    const finance ={
+			"available": "$NaN",
+			"investment_cost": "$NaN",
+			"annual": "NaN"
+		}
+    return res.status(200).json({
+      status: "Failed",
+      data: {session_3:req.session_3,financial_status:finance, announcement:["NaN"], period:req.current_year},
+    });
+  }
+},
   submit_final: async (req, res) => {
     const auth = await google.auth.getClient({
       keyFile:req.server,
