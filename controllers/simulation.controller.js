@@ -31,7 +31,7 @@ async function write(sheets, range, spreadsheetId, values) {
 }
 
 function generateRandomAccount() {
-  const paths=['./load1.json','./server11.json']
+  const paths=['./load1.json','./server11.json','./load2.json','./load3.json','./load4.json','./load5.json']
   return paths[Math.floor(Math.random()*paths.length)]
 }
 async function isValid(sheets, spreadsheetId, cell,value) {
