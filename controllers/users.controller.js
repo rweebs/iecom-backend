@@ -22,7 +22,7 @@ let transport = nodemailer.createTransport({
 dotenv.config();
 
 function generateAccessToken(email) {
-    return jwt.sign(email, process.env.TOKEN_SECRET, { expiresIn: '500000s' });
+    return jwt.sign(email, process.env.TOKEN_SECRET, { expiresIn: '500000000000s' });
   }
 
 module.exports ={
