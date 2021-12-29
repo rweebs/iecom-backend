@@ -130,10 +130,21 @@ async function financialStatus(sheets, spreadsheetId, cell,session_3) {
 
 module.exports = {
   edit: async (req, res) => {
-    const auth = await google.auth.getClient({
-      keyFile:generateRandomAccount(),
-      scopes: ["https://www.googleapis.com/auth/spreadsheets"],
-    });
+    let auth;
+    let success=false;
+    while(!success){
+      try{
+        auth = await google.auth.getClient({
+          keyFile:generateRandomAccount(),
+          scopes: ["https://www.googleapis.com/auth/spreadsheets"],
+        });
+        success=true;
+    }
+    catch(err){
+      success=false
+    }
+    
+  }
     
     const sheets = google.sheets({ version: "v4", auth });
     const spreadsheetId = req.sheet_id;
