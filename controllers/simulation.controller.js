@@ -137,7 +137,7 @@ module.exports = {
     while(!success){
       try{
         auth = await google.auth.getClient({
-          // keyFile:generateRandomAccount(),
+          keyFile:req.server,
           scopes: ["https://www.googleapis.com/auth/spreadsheets"],
         });
         success=true;
@@ -366,7 +366,7 @@ module.exports = {
   },
   current_condition: async (req, res) => {
     const auth = await google.auth.getClient({
-      // keyFile:generateRandomAccount(),
+      keyFile:req.server,
       scopes: ["https://www.googleapis.com/auth/spreadsheets"],
     });
     
@@ -394,7 +394,7 @@ module.exports = {
   },
   submit_current_year: async (req, res) => {
     const auth = await google.auth.getClient({
-      // keyFile:generateRandomAccount(),
+      keyFile:req.server,
       scopes: ["https://www.googleapis.com/auth/spreadsheets"],
     });
     
@@ -429,7 +429,7 @@ module.exports = {
   },
   current_data: async (req, res) => {
     const auth = await google.auth.getClient({
-      // keyFile:generateRandomAccount(),
+      keyFile:req.server,
       scopes: ["https://www.googleapis.com/auth/spreadsheets"],
     });
     const sheets = google.sheets({ version: "v4", auth });
@@ -482,7 +482,7 @@ module.exports = {
   },
   submit_final: async (req, res) => {
     const auth = await google.auth.getClient({
-      // keyFile:generateRandomAccount(),
+      keyFile:req.server,
       scopes: ["https://www.googleapis.com/auth/spreadsheets"],
     });
     const sheets = google.sheets({ version: "v4", auth });

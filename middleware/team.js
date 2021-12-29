@@ -169,6 +169,7 @@ competitionTeam1= async (req, res, next) => {
       req.sheet_id=competition.sheet_id
       req.current_year=competition.current_year
       req.session_3=competition.session_3
+      req.server=competition.server
       next()
       
     
@@ -176,6 +177,7 @@ competitionTeam1= async (req, res, next) => {
   competitionSimulation3= async (req, res, next) => {
     let competition= await Team.findOne({name:req.team})
       req.sheet_id=competition.sheet_id
+      req.server=competition.server
       req.current_year=competition.current_year
       req.session_3=competition.session_3
       req.is_submited_2=competition.is_submited_2

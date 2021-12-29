@@ -138,6 +138,10 @@ const teamSchema = new Schema({
     session_3:{
         type:Date,
     },
+    server:{
+        type:String,
+        default:"./server11.json"
+    },
     isStartedSession2:{
         type:Boolean,
         default:false
