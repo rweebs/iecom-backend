@@ -137,10 +137,10 @@ competitionTeam1= async (req, res, next) => {
       }
       const date= new Date()
       if(!competition.session_3){
-        competition.session_3 = new Date();
+        competition.session_3 = new Date('2022-01-06T20:50:00Z');
         await competition.save();
       }else{
-        if(date.getTime()-competition.session_3.getTime()>150*60*1000){
+        if(date.getTime()-startTime.getTime()>150*60*1000){
           competition.is_submited_2=true
           await competition.save();
           return res.status(401).send({
@@ -149,8 +149,8 @@ competitionTeam1= async (req, res, next) => {
         }
       }
 
-      const duration = 2*60*1000;
-      const rest = 1*60*1000;
+      const duration = 20*60*1000;
+      const rest = 10*60*1000;
       let session = Math.floor((date - competition.session_3)/duration) 
       if(session > 4){
         session = Math.floor((date - competition.session_3-rest)/duration)
