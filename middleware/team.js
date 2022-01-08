@@ -140,7 +140,7 @@ competitionTeam1= async (req, res, next) => {
         competition.session_3 = date;
         await competition.save();
       }else{
-        if(date.getTime()-competition.session_3.getTime()>15000*60*1000){
+        if(date.getTime()-competition.session_3.getTime()>152*60*1000){
           competition.is_submited_2=true
           await competition.save();
           return res.status(401).send({
