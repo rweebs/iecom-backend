@@ -608,6 +608,14 @@ module.exports = {
         //maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
       });
       let team = await Team.findOne({name:req.team})
+      if (team.final_cash == 0){
+        const final_cash = await read(sheets, 'Keuangan!B12', spreadsheetId);
+        await team.save()
+        return(res.status(200).json({
+          status:"SUCCESS",
+          data:formatter.format(final_cash)
+      }))
+      }
         return(res.status(200).json({
                 status:"SUCCESS",
                 data:formatter.format(team.final_cash)
