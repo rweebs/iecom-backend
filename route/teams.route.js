@@ -255,6 +255,7 @@ module.exports = function(app) {
     [
       authJwt.verifyToken,
       GetTeamName.competitionSimulation,
+      GetTeamName.competitionSimulation3
     ],
     simulation.status_final
   );
