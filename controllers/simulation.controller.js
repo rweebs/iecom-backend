@@ -607,18 +607,26 @@ module.exports = {
         //minimumFractionDigits: 0, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
         //maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
       });
+      let team = await Team.findOne({name:req.team})
+      if (team.final_cash==0){
       const auth = await google.auth.getClient({
         keyFile:req.server,
         scopes: ["https://www.googleapis.com/auth/spreadsheets"],
       });
       const sheets = google.sheets({ version: "v4", auth });
       const spreadsheetId = req.sheet_id;
-      let team = await Team.findOne({name:req.team})
+      
         const final_cash = await read(sheets, 'Keuangan!B12', spreadsheetId);
         return(res.status(200).json({
           status:"SUCCESS",
           data:formatter.format(final_cash)
+      }))}
+      else{
+        return(res.status(200).json({
+          status:"SUCCESS",
+          data:formatter.format(team.final_cash)
       }))
+      }
       
         
     },
