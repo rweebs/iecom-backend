@@ -607,9 +607,7 @@ module.exports = {
         //minimumFractionDigits: 0, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
         //maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
       });
-      let team = await Team.findOne({name:req.team})
         const final_cash = await read(sheets, 'Keuangan!B12', spreadsheetId);
-        await team.save()
         return(res.status(200).json({
           status:"SUCCESS",
           data:formatter.format(final_cash)
